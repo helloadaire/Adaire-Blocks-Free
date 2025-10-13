@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "create-block/accordion-block",
+    "version": "0.1.0",
+    "title": "Accordion",
+    "category": "widgets",
+    "icon": "list-view",
+    "description": "Configurable accordion with animations, colors, and typography.",
+    "supports": {
+        "html": false,
+        "anchor": true,
+        "align": ["wide", "full"],
+        "customClassName": true
+    },
+	"textdomain": "accordion-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+    "attributes": {
+        "blockId": { "type": "string", "default": "" },
+        "items": {
+            "type": "array",
+            "default": [
+                { "title": "Accordion Item 1", "content": "Lorem ipsum dolor sit amet.", "open": true }
+            ]
+        },
+        "titleColor": { "type": "string", "default": "#1a1a1a" },
+        "contentColor": { "type": "string", "default": "#4a5568" },
+        "backgroundColor": { "type": "string", "default": "#ffffff" },
+        "chevronColor": { "type": "string", "default": "#4a5568" },
+        "titleFontSize": { "type": "number", "default": 20 },
+        "contentFontSize": { "type": "number", "default": 16 },
+        "gap": { "type": "number", "default": 12 },
+        "radius": { "type": "number", "default": 12 },
+        "padding": { "type": "number", "default": 20 },
+        "animationDuration": { "type": "number", "default": 300 },
+        "animationEasing": { "type": "string", "default": "ease" },
+        "allowMultipleOpen": { "type": "boolean", "default": false },
+        "icon": { "type": "string", "default": "chevron-down" },
+        "marginTop": { "type": "number", "default": 0 },
+        "marginRight": { "type": "number", "default": 0 },
+        "marginBottom": { "type": "number", "default": 0 },
+        "marginLeft": { "type": "number", "default": 0 },
+        "marginHorizontal": {
+            "type": "object",
+            "default": {
+                "desktop": 0,
+                "tablet": 0,
+                "mobile": 0
+            }
+        },
+        "titleFontWeight": { "type": "string", "default": "600" },
+        "contentFontWeight": { "type": "string", "default": "400" },
+        "shadowIntensity": { "type": "number", "default": 0.08 },
+        "contentBackgroundColor": { "type": "string", "default": "#f8fafc" },
+        "dividerColor": { "type": "string", "default": "#e2e8f0" },
+        "dividerThickness": { "type": "number", "default": 1 },
+        "containerMode": { "type": "string", "default": "full" },
+        "containerMaxWidth": {
+            "type": "object",
+            "default": {
+                "desktop": { "value": 1200, "unit": "px" },
+                "tablet": { "value": 100, "unit": "%" },
+                "mobile": { "value": 100, "unit": "%" }
+            }
+        }
+    }
+}
+

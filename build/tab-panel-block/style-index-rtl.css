@@ -1,0 +1,37 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/tab-panel-block/style.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+.adaire-tab-panel:not(.is-active) {
+  width: 100%;
+  display: none !important;
+  opacity: 0;
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.adaire-tab-panel.is-active {
+  width: 100%;
+  display: block !important;
+  opacity: 1;
+  position: relative !important;
+  height: auto !important;
+  overflow: visible !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.adaire-tab-panel__content {
+  width: 100%;
+}
+.adaire-tab-panel__content > * {
+  margin-bottom: 1em;
+}
+.adaire-tab-panel__content > *:last-child {
+  margin-bottom: 0;
+}

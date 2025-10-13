@@ -1,0 +1,106 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/button-block",
+  "version": "0.1.0",
+  "title": "Button Block",
+  "category": "widgets",
+  "icon": "button",
+  "description": "A simple button block with customizable text, link, and target options.",
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "textdomain": "button-block",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "attributes": {
+    "buttonText": {
+      "type": "string",
+      "default": "Click Here"
+    },
+    "buttonLink": {
+      "type": "string",
+      "default": "#"
+    },
+    "openInNewTab": {
+      "type": "boolean",
+      "default": false
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonColor": {
+      "type": "string",
+      "default": "#000000"
+    },
+    "buttonBackgroundColor": {
+      "type": "string",
+      "default": "transparent"
+    },
+    "buttonHoverColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "buttonHoverBackgroundColor": {
+      "type": "string",
+      "default": "transparent"
+    },
+    "buttonStyle": {
+      "type": "string",
+      "default": "underline"
+    },
+    "underlineColor": {
+      "type": "string",
+      "default": "#ff4242"
+    },
+    "blurAmount": {
+      "type": "number",
+      "default": 0
+    },
+    "fontSize": {
+      "type": "number",
+      "default": 18
+    },
+    "showIcon": {
+      "type": "boolean",
+      "default": true
+    },
+    "hoverAnimation": {
+      "type": "string",
+      "default": "slide-underline"
+    },
+    "buttonPadding": {
+      "type": "object",
+      "default": {
+        "top": "10px",
+        "right": "20px",
+        "bottom": "10px",
+        "left": "20px"
+      }
+    },
+    "buttonMargin": {
+      "type": "object",
+      "default": {
+        "top": "20px",
+        "right": "0px",
+        "bottom": "20px",
+        "left": "0px"
+      }
+    },
+    "zIndex": {
+      "type": "number",
+      "default": 1
+    },
+    "borderRadius": {
+      "type": "number",
+      "default": 0
+    },
+    "fontWeight": {
+      "type": "string",
+      "default": "500"
+    }
+  }
+}

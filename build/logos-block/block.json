@@ -1,0 +1,118 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/logos-block",
+  "version": "0.1.0",
+  "title": "Logos Block",
+  "category": "media",
+  "icon": "grid-view",
+  "description": "A Logos Block with customizable title and partner logos slider",
+  "example": {},
+  "supports": {
+    "html": false,
+    "align": true,
+    "alignWide": true,
+    "anchor": true,
+    "customClassName": true,
+    "reusable": true
+  },
+  "textdomain": "logos-block",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "attributes": {
+    "partnerLogos": {
+      "type": "array",
+      "default": [
+        {
+          "id": 1,
+          "companyName": "Company 1",
+          "imageUrl": "",
+          "imageId": 0
+        }
+      ]
+    },
+    "sliderSpeed": {
+      "type": "number",
+      "default": 0.5
+    },
+    "slidesPerView": {
+      "type": "number",
+      "default": 4
+    },
+    "gap": {
+      "type": "string",
+      "default": "1rem"
+    },
+    "pauseOnHover": {
+      "type": "boolean",
+      "default": true
+    },
+    "logoHeight": {
+      "type": "number",
+      "default": 60
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "titleText": {
+      "type": "string",
+      "default": "Our Partners"
+    },
+    "titleFontSize": {
+      "type": "number",
+      "default": 24
+    },
+    "titleFontWeight": {
+      "type": "string",
+      "default": "600"
+    },
+    "titleColor": {
+      "type": "string",
+      "default": "#333333"
+    },
+    "titlePaddingTop": {
+      "type": "number",
+      "default": 20
+    },
+    "titlePaddingBottom": {
+      "type": "number",
+      "default": 30
+    },
+    "blockPaddingTop": {
+      "type": "number",
+      "default": 40
+    },
+    "blockPaddingBottom": {
+      "type": "number",
+      "default": 40
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "containerMode": {
+      "type": "string",
+      "default": "full"
+    },
+    "containerMaxWidth": {
+      "type": "object",
+      "default": {
+        "desktop": {
+          "value": 1200,
+          "unit": "px"
+        },
+        "tablet": {
+          "value": 100,
+          "unit": "%"
+        },
+        "mobile": {
+          "value": 100,
+          "unit": "%"
+        }
+      }
+    }
+  }
+}

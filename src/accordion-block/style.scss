@@ -1,0 +1,246 @@
+.adaire-accordion {
+  /* Constrained container support - apply to inner container */
+  &[style*="--acc-container-mode: constrained"] {
+    .adaire-accordion__container {
+      max-width: var(--acc-container-max-width, 1200px);
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    /* Responsive container max-width for tablet */
+    @media (max-width: 1024px) {
+      .adaire-accordion__container {
+        max-width: var(--acc-container-max-width-tablet, var(--acc-container-max-width, 100%));
+      }
+    }
+    
+    /* Responsive container max-width for mobile */
+    @media (max-width: 768px) {
+      .adaire-accordion__container {
+        max-width: var(--acc-container-max-width-mobile, var(--acc-container-max-width-tablet, 100%));
+      }
+    }
+  }
+  --acc-title-color: #111;
+  --acc-content-color: #444;
+  --acc-bg: #fff;
+  --acc-chevron: #111;
+  --acc-title-size: 18px;
+  --acc-content-size: 16px;
+  --acc-gap: 8px;
+  --acc-radius: 8px;
+  --acc-padding: 16px;
+  --acc-duration: 300ms;
+  --acc-easing: ease;
+  --acc-margin-top: 0px;
+  --acc-margin-right: 0px;
+  --acc-margin-bottom: 0px;
+  --acc-margin-left: 0px;
+  --acc-title-weight: 600;
+  --acc-content-weight: 400;
+  --acc-shadow-intensity: 0.08;
+  --acc-content-bg: #f8fafc;
+
+  display: block;
+  font-family: inherit;
+  .adaire-accordion__container {
+    margin: var(--acc-margin-top) var(--acc-margin-right) var(--acc-margin-bottom) var(--acc-margin-left);
+    font-family: inherit;
+  }
+
+  /* Responsive horizontal margins */
+  @media (max-width: 1024px) {
+    .adaire-accordion__container {
+      margin-left: var(--acc-margin-h-tablet, var(--acc-margin-left));
+      margin-right: var(--acc-margin-h-tablet, var(--acc-margin-right));
+    }
+  }
+  @media (max-width: 768px) {
+    .adaire-accordion__container {
+      margin-left: var(--acc-margin-h-mobile, var(--acc-margin-left));
+      margin-right: var(--acc-margin-h-mobile, var(--acc-margin-right));
+    }
+  }
+
+  /* When block is wide/full aligned, themes often neutralize margins.
+     Use padding as a fallback so horizontal spacing still shows. */
+  &.alignfull,
+  &.alignwide {
+    .adaire-accordion__container {
+      padding-left: var(--acc-margin-h-desktop, var(--acc-margin-left));
+      padding-right: var(--acc-margin-h-desktop, var(--acc-margin-right));
+    }
+
+    @media (max-width: 1024px) {
+      .adaire-accordion__container {
+        padding-left: var(--acc-margin-h-tablet, var(--acc-margin-left));
+        padding-right: var(--acc-margin-h-tablet, var(--acc-margin-right));
+      }
+    }
+    @media (max-width: 768px) {
+      .adaire-accordion__container {
+        padding-left: var(--acc-margin-h-mobile, var(--acc-margin-left));
+        padding-right: var(--acc-margin-h-mobile, var(--acc-margin-right));
+      }
+    }
+  }
+  
+  .adaire-accordion__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--acc-gap);
+  }
+
+  .adaire-accordion__item {
+    background: var(--acc-bg);
+    border-radius: var(--acc-radius);
+    overflow: hidden;
+    transition: all var(--acc-duration) var(--acc-easing);
+    position: relative;
+    /* Base shadow: alpha driven by intensity */
+    box-shadow: 0 1px 4px rgba(0,0,0,var(--acc-shadow-intensity, 0.08));
+
+    &:hover {
+      transform: translateY(-1px);
+      /* Hover shadow: alpha driven by intensity */
+      box-shadow: 0 4px 12px rgba(0,0,0,var(--acc-shadow-intensity, 0.12));
+    }
+
+    &.is-open {
+      /* Open shadow: alpha driven by intensity */
+      box-shadow: 0 8px 25px rgba(0,0,0,var(--acc-shadow-intensity, 0.16));
+      transform: translateY(-2px);
+    }
+  }
+
+  .adaire-accordion__header {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: var(--acc-padding);
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--acc-duration) var(--acc-easing);
+    position: relative;
+    font-family: inherit;
+
+    &:hover {
+      background: rgba(0,0,0,0.02);
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--acc-chevron);
+      outline-offset: 2px;
+    }
+  }
+
+  .adaire-accordion__title {
+    color: var(--acc-title-color);
+    font-size: var(--acc-title-size);
+    line-height: 1.4;
+    font-weight: var(--acc-title-weight);
+    font-family: inherit;
+    margin: 0;
+    flex: 1;
+    
+    // Ensure same font family as content
+    * {
+      font-family: inherit;
+    }
+  }
+
+  .adaire-accordion__chevron {
+    color: var(--acc-chevron);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(0deg);
+    transition: all var(--acc-duration) var(--acc-easing);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.05);
+    flex-shrink: 0;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+      transition: transform var(--acc-duration) var(--acc-easing);
+    }
+  }
+
+  .adaire-accordion__item.is-open .adaire-accordion__chevron {
+    transform: rotate(180deg);
+    background: rgba(0,0,0,0.1);
+  }
+
+  .adaire-accordion__panel {
+    will-change: height;
+    height: 0;
+    overflow: hidden;
+    transition: height var(--acc-duration) var(--acc-easing);
+  }
+
+  // In the editor, use auto height for open items (no JS)
+  .editor-styles-wrapper & .adaire-accordion__item.is-open .adaire-accordion__panel {
+    height: auto;
+  }
+
+  .adaire-accordion__content {
+    color: var(--acc-content-color);
+    font-size: var(--acc-content-size);
+    font-weight: var(--acc-content-weight);
+    font-family: inherit;
+    line-height: 1.6;
+    padding: var(--acc-padding);
+    margin: 0;
+    background: var(--acc-content-bg);
+    border-radius: 0 0 var(--acc-radius) var(--acc-radius);
+    border-top: var(--acc-divider-thickness, 1px) solid var(--acc-divider-color, #e2e8f0);
+    
+    // Ensure same font family as title
+    * {
+      font-family: inherit;
+    }
+    
+    p {
+      margin: 0 0 1em 0;
+      font-family: inherit;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    
+    strong, b {
+      font-weight: 700;
+      font-family: inherit;
+    }
+    
+    em, i {
+      font-style: italic;
+      font-family: inherit;
+    }
+    
+    a {
+      color: inherit;
+      text-decoration: underline;
+      font-family: inherit;
+      
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+

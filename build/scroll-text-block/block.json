@@ -1,0 +1,117 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/scroll-text-block",
+  "version": "0.1.0",
+  "title": "Scroll Text",
+  "category": "widgets",
+  "icon": "smiley",
+  "description": "A scroll-triggered text animation block using GSAP.",
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "textdomain": "scroll-text-block",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "attributes": {
+    "heroText": {
+      "type": "string",
+      "default": "Hello from Adaire x GSAP!"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "fontSize": {
+      "type": "number",
+      "default": 32
+    },
+    "fontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#000000"
+    },
+    "animationSpeed": {
+      "type": "number",
+      "default": 1
+    },
+    "scrollDirection": {
+      "type": "string",
+      "default": "left"
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "marginTop": {
+      "type": "number",
+      "default": 0
+    },
+    "marginBottom": {
+      "type": "number",
+      "default": 0
+    },
+    "marginLeft": {
+      "type": "number",
+      "default": 0
+    },
+    "marginRight": {
+      "type": "number",
+      "default": 0
+    },
+    "paddingTop": {
+      "type": "number",
+      "default": 0
+    },
+    "paddingBottom": {
+      "type": "number",
+      "default": 0
+    },
+    "paddingLeft": {
+      "type": "number",
+      "default": 0
+    },
+    "paddingRight": {
+      "type": "number",
+      "default": 0
+    },
+    "fontWeight": {
+      "type": "string",
+      "default": "400"
+    },
+    "backgroundColorOpacity": {
+      "type": "number",
+      "default": 1
+    },
+    "containerWidth": {
+      "type": "number",
+      "default": 100
+    },
+    "containerWidthUnit": {
+      "type": "string",
+      "default": "vw"
+    },
+    "containerHeight": {
+      "type": "number",
+      "default": 100
+    },
+    "containerHeightUnit": {
+      "type": "string",
+      "default": "vh"
+    },
+    "pinHeight": {
+      "type": "number",
+      "default": 100
+    },
+    "pinHeightUnit": {
+      "type": "string",
+      "default": "vh"
+    }
+  }
+}

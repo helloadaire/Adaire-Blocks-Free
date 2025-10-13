@@ -1,0 +1,207 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/portfolio-block",
+	"version": "0.1.0",
+	"title": "Portfolio Block",
+	"category": "widgets",
+	"icon": "admin-generic",
+	"description": "A portfolio section with gallery and modal slider using GSAP animations.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": true,
+		"alignWide": true,
+		"anchor": true,
+		"customClassName": true,
+		"reusable": true
+	},
+	"textdomain": "portfolio-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"attributes": {
+		"agencyTitle": {
+			"type": "string",
+			"default": "Our Work"
+		},
+		"agencyDescription": {
+			"type": "string",
+			"default": "We've collaborated with innovative brands and startups to create compelling visual narratives that drive engagement and deliver results. Our portfolio showcases our expertise in branding, digital design, and creative storytelling."
+		},
+		"ctaButtonText": {
+			"type": "string",
+			"default": "View Full Portfolio"
+		},
+		"slides": {
+			"type": "array",
+			"default": [
+				{
+					"id": 1,
+					"slideTitle": "Startup Nights",
+					"slideDescription": "Startup Nights is Switzerland’s leading startup event, held annually in Winterthur. Since launching in 2017, it has grown into a major two-day gathering that brings together over 8,500 founders, investors, and innovators.",
+					"slideUrl": "https://adaire.dev/ad/startup-nights/",
+					"slideTags": ["Startup Ecosystem", "Tech Conference", "Networking Platform", "Entrepreneurial Innovation"],
+					"slideImg": "",
+					"slideImgId": 0
+				},
+				{
+					"id": 2,
+					"slideTitle": "APST Research",
+					"slideDescription": "A medical research company that focuses on improving the prognosis for patients afflicted with ALS/Lou Gehrig’s disease.",
+					"slideUrl": "https://adaire.dev/ad/apst",
+					"slideTags": ["ALS Prognostic Platform", "Medical Data Analytics", "Blood Test Integration", "Secure Patient Portal"],
+					"slideImg": "",
+					"slideImgId": 0
+				},
+				{
+					"id": 3,
+					"slideTitle": "Future Tree",
+					"slideDescription": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit accusantium consequatur alias sequi tenetur ratione odio quis vitae ab id dolores quas quidem ipsam nesciunt, quam sed minus nihil molestiae?",
+					"slideUrl": "https://link.com",
+					"slideTags": ["Monochrome", "Editorial", "Fashion", "Visual Identity"],
+					"slideImg": "",
+					"slideImgId": 0
+				},
+				{
+					"id": 4,
+					"slideTitle": "Physio und Sport",
+					"slideDescription": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit accusantium consequatur alias sequi tenetur ratione odio quis vitae ab id dolores quas quidem ipsam nesciunt, quam sed minus nihil molestiae?",
+					"slideUrl": "https://link.com",
+					"slideTags": ["Monochrome", "Editorial", "Fashion", "Visual Identity"],
+					"slideImg": "",
+					"slideImgId": 0
+				}
+			]
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": "#667eea"
+		},
+		"gradientType": {
+			"type": "string",
+			"default": "linear"
+		},
+		"gradientAngle": {
+			"type": "number",
+			"default": 135
+		},
+		"gradientColor1": {
+			"type": "string",
+			"default": "#667eea"
+		},
+		"gradientColor2": {
+			"type": "string",
+			"default": "#764ba2"
+		},
+		"gradientColor3": {
+			"type": "string",
+			"default": ""
+		},
+		"gradientStop1": {
+			"type": "number",
+			"default": 0
+		},
+		"gradientStop2": {
+			"type": "number",
+			"default": 100
+		},
+		"gradientStop3": {
+			"type": "number",
+			"default": 50
+		},
+		"textColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"titleFontSize": {
+			"type": "number",
+			"default": 40
+		},
+		"titleFontFamily": {
+			"type": "string",
+			"default": "inherit"
+		},
+		"textFontSize": {
+			"type": "number",
+			"default": 18
+		},
+		"textFontFamily": {
+			"type": "string",
+			"default": "inherit"
+		},
+		"slideTitleFontSize": {
+			"type": "number",
+			"default": 112
+		},
+		"slideDescriptionFontSize": {
+			"type": "number",
+			"default": 20
+		},
+		"slideTagFontSize": {
+			"type": "number",
+			"default": 20
+		},
+		"buttonColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"buttonBackgroundColor": {
+			"type": "string",
+			"default": "transparent"
+		},
+		"buttonHoverColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"buttonHoverBackgroundColor": {
+			"type": "string",
+			"default": "transparent"
+		},
+		"buttonStyle": {
+			"type": "string",
+			"default": "underline"
+		},
+		"underlineColor": {
+			"type": "string",
+			"default": "#ff4242"
+		},
+		"blurAmount": {
+			"type": "number",
+			"default": 0
+		},
+		"fontSize": {
+			"type": "number",
+			"default": 18
+		},
+		"showIcon": {
+			"type": "boolean",
+			"default": true
+		},
+		"hoverAnimation": {
+			"type": "string",
+			"default": "slide-underline"
+		},
+		"buttonPadding": {
+			"type": "string",
+			"default": "0.2em 0"
+		},
+		"buttonMargin": {
+			"type": "string",
+			"default": "20px 0"
+		},
+		"zIndex": {
+			"type": "number",
+			"default": 1
+		},
+		"borderRadius": {
+			"type": "number",
+			"default": 0
+		},
+		"fontWeight": {
+			"type": "string",
+			"default": "500"
+		}
+	}
+}

@@ -1,0 +1,121 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/testimonial-block",
+	"version": "0.1.0",
+	"title": "Testimonial Block",
+	"category": "text",
+	"icon": "text",
+	"description": "A testimonial block in a customizable carousel",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "testimonial-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"attributes": {
+		"textColor": {
+			"type": "string",
+			"default": "#000000"
+		},
+		"arrowColor": {
+			"type": "string",
+			"default": "#ff0000"
+		},
+		"dotColor": {
+			"type": "string",
+			"default": "#ff0000"
+		},
+		"fontSize": {
+			"type": "number",
+			"default": 16
+		},
+		"textToDisplay": {
+			"type": "string",
+			"default": "Hello World"
+		},
+		"slidesPerView": {
+			"type": "number",
+			"default": 1
+		},
+		"slides": {
+			"type": "number",
+			"default": 3
+		},
+		"spaceBetween": {
+			"type": "number",
+			"default": 50
+		},
+		"gap": {
+			"type": "number",
+			"default": 30
+		},
+		"logoSize": {
+			"type": "number",
+			"default": 60
+		},
+		"loop": {
+			"type": "boolean",
+			"default": true
+		},
+		"navigation": {
+			"type": "boolean",
+			"default": true
+		},
+		"pagination": {
+			"type": "boolean",
+			"default": true
+		},
+		"scrollbar": {
+			"type": "boolean",
+			"default": false
+		},
+		"testimonials": {
+			"type": "array",
+			"default": [
+				{
+					"companyName": "STATS PERFORM",
+					"companyLogo": "https://via.placeholder.com/200x60/4F46E5/FFFFFF?text=STATS+PERFORM",
+					"quote": "With an aggressive product development timeline, we needed a partner who had advanced mobile and machine-learning capabilities and could also match our pace.",
+					"authorName": "Darryl Lewis",
+					"authorTitle": "CTO of Stats Perform"
+				}
+			]
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		},
+		"maxWidth": {
+			"type": "number",
+			"default": 1200
+		},
+		"cardBackgroundColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"blockBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"logoAlignment": {
+			"type": "string",
+			"default": "center"
+		},
+		"containerMode": {
+			"type": "string",
+			"default": "full"
+		},
+		"containerMaxWidth": {
+			"type": "object",
+			"default": {
+				"desktop": { "value": 1200, "unit": "px" },
+				"tablet": { "value": 100, "unit": "%" },
+				"mobile": { "value": 100, "unit": "%" }
+			}
+		}
+	}
+}

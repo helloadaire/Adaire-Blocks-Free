@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "create-block/tabs-block",
+    "version": "0.1.0",
+    "title": "Tabs",
+    "category": "widgets",
+    "icon": "index-card",
+    "description": "Beautiful tabbed content with smooth GSAP animations and customizable styling.",
+    "supports": {
+        "html": false,
+        "anchor": true,
+        "align": ["wide", "full"],
+        "customClassName": true
+    },
+    "textdomain": "tabs-block",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css",
+    "viewScript": "file:./view.js",
+    "attributes": {
+        "blockId": { "type": "string", "default": "" },
+        "tabs": {
+            "type": "array",
+            "default": [
+                { "title": "Retail", "id": "tab-1" }
+            ]
+        },
+        "activeTab": { "type": "number", "default": 0 },
+        "tabTitleColor": { "type": "string", "default": "#64748b" },
+        "tabTitleActiveColor": { "type": "string", "default": "#0f172a" },
+        "tabUnderlineColor": { "type": "string", "default": "#3b82f6" },
+        "tabTitleFontSize": { "type": "number", "default": 18 },
+        "tabTitleFontWeight": { "type": "string", "default": "500" },
+        "tabTitleActiveFontWeight": { "type": "string", "default": "600" },
+        "tabGap": { "type": "number", "default": 32 },
+        "underlineHeight": { "type": "number", "default": 3 },
+        "contentPaddingTop": { "type": "number", "default": 40 },
+        "contentPaddingRight": { "type": "number", "default": 0 },
+        "contentPaddingBottom": { "type": "number", "default": 40 },
+        "contentPaddingLeft": { "type": "number", "default": 0 },
+        "tabsAlign": { "type": "string", "default": "flex-start" },
+        "animationDuration": { "type": "number", "default": 0.6 },
+        "animationEase": { "type": "string", "default": "power2.out" },
+        "containerMode": { "type": "string", "default": "full" },
+        "containerMaxWidth": {
+            "type": "object",
+            "default": {
+                "desktop": { "value": 1200, "unit": "px" },
+                "tablet": { "value": 100, "unit": "%" },
+                "mobile": { "value": 100, "unit": "%" }
+            }
+        },
+        "marginTop": { "type": "number", "default": 0 },
+        "marginRight": { "type": "number", "default": 0 },
+        "marginBottom": { "type": "number", "default": 0 },
+        "marginLeft": { "type": "number", "default": 0 },
+        "tabLayout": { "type": "string", "default": "horizontal" },
+        "tabPosition": { "type": "string", "default": "top" },
+        "verticalActiveBgColor": { "type": "string", "default": "rgba(59, 130, 246, 0.05)" },
+        "verticalActiveBgOpacity": { "type": "number", "default": 0.05 }
+    }
+}
+

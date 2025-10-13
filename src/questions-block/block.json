@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/questions-block",
+  "version": "0.1.0",
+  "title": "Questions Block",
+  "category": "widgets",
+  "icon": "smiley",
+  "description": "Animated questions section with GSAP pinning and transitions.",
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "textdomain": "questions-block",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "attributes": {
+    "question1Title": { "type": "string", "default": "Who?" },
+    "question1Content": { "type": "string", "default": "Who is Adaire Digital? Adaire Digital is your white-label web developer. Need a site? No problem." },
+    "question2Title": { "type": "string", "default": "You?" },
+    "question2Content": { "type": "string", "default": "Are you an agency keen to expand your team without hiring; Are you a company who needs to bring additional web talent into your team; Are you an individual looking to have your own team to start or elevate your online presence, we would love to work with you! Companies: Ensure your site or eCommerce site is always up to date and ready for visitors. Individuals: If you need an online presence, we can help" },
+    "question3Title": { "type": "string", "default": "What?" },
+    "question3Content": { "type": "string", "default": "What do we do? We are web experts doing all things digital web." },
+    "backgroundColor": { "type": "string", "default": "#070707" },
+    "textColor": { "type": "string", "default": "#ffffff" },
+    "titleColor": { "type": "string", "default": "#ffffff" },
+    "inactiveTitleColor": { "type": "string", "default": "#666666" },
+    "activeSection": { "type": "string", "default": "what" },
+    "blockId": { "type": "string", "default": "" }
+  }
+} 

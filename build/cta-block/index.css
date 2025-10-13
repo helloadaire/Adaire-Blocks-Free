@@ -1,0 +1,100 @@
+/*!**************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/cta-block/editor.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************/
+/**
+ * The following styles get applied inside the editor only.
+ */
+.cta-block-editor {
+  position: relative;
+  min-height: 400px;
+  height: auto;
+  cursor: pointer;
+  /* Editor preview styling */
+  /* Splide Navigation in Editor */
+}
+.cta-block-editor .cta-container {
+  position: relative;
+  z-index: 2;
+}
+.cta-block-editor .gradient-glow {
+  opacity: 0.7; /* More visible in editor */
+}
+.cta-block-editor .carousel-container {
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  min-height: 150px;
+}
+.cta-block-editor .carousel-container .cta-splide {
+  width: 100%;
+  height: 100%;
+}
+.cta-block-editor .carousel-container .cta-splide .splide__track {
+  height: 100%;
+}
+.cta-block-editor .carousel-container .cta-splide .splide__list {
+  height: 100%;
+}
+.cta-block-editor .carousel-container .cta-splide .splide__slide {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  position: relative;
+}
+.cta-block-editor .carousel-item {
+  pointer-events: none; /* Prevent interference with editing */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  border-radius: 0;
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.1) 0%, rgba(255, 102, 102, 0.05) 100%);
+}
+.cta-block-editor .carousel-item .carousel-text-overlay {
+  padding: 1rem;
+  background: none;
+  border-radius: 0;
+  color: #333;
+  text-align: left;
+}
+.cta-block-editor .carousel-item .carousel-text-overlay h3 {
+  font-size: 1.2rem;
+  font-weight: var(--title-font-weight, 700);
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+.cta-block-editor .carousel-item .carousel-text-overlay p {
+  font-size: 0.8rem;
+  font-weight: var(--description-font-weight, 400);
+  margin: 0;
+  color: #666;
+  line-height: 1.4;
+}
+.cta-block-editor .cta-title,
+.cta-block-editor .cta-subtitle {
+  cursor: text;
+}
+.cta-block-editor .cta-title {
+  color: var(--title-color, #ffffff) !important;
+  font-weight: var(--main-title-font-weight, 700) !important;
+}
+.cta-block-editor .cta-subtitle {
+  color: var(--subtitle-color, #ffffff) !important;
+  font-weight: var(--subtitle-font-weight, 400) !important;
+}
+.cta-block-editor .carousel-text-overlay h3 {
+  color: var(--carousel-text-color, #ffffff) !important;
+}
+.cta-block-editor .carousel-text-overlay p {
+  color: var(--carousel-text-color, #ffffff) !important;
+}
+.cta-block-editor .cta-splide .splide__arrow {
+  pointer-events: none; /* Disable navigation in editor */
+  opacity: 0.5;
+}
+.cta-block-editor .cta-splide .splide__pagination {
+  pointer-events: none; /* Disable pagination in editor */
+  opacity: 0.5;
+}
+
+/*# sourceMappingURL=index.css.map*/

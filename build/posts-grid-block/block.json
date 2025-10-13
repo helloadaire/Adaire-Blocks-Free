@@ -1,0 +1,278 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/posts-grid-block",
+  "version": "0.1.0",
+  "title": "Posts Grid",
+  "category": "widgets",
+  "icon": "grid-view",
+  "description": "A dynamic posts grid with beautiful GSAP animations, multiple layout options, and category filtering.",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "customClassName": true
+  },
+  "textdomain": "posts-grid-block",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "attributes": {
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 6
+    },
+    "enablePagination": {
+      "type": "boolean",
+      "default": false
+    },
+    "paginationStyle": {
+      "type": "string",
+      "default": "numbers"
+    },
+    "selectedCategories": {
+      "type": "array",
+      "default": []
+    },
+    "selectedPosts": {
+      "type": "array",
+      "default": []
+    },
+    "postType": {
+      "type": "string",
+      "default": "post"
+    },
+    "excludeCurrentPost": {
+      "type": "boolean",
+      "default": true
+    },
+    "showCategories": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthor": {
+      "type": "boolean",
+      "default": true
+    },
+    "showReadTime": {
+      "type": "boolean",
+      "default": true
+    },
+    "showExcerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "excerptLength": {
+      "type": "number",
+      "default": 20
+    },
+    "layoutType": {
+      "type": "string",
+      "default": "normal"
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "enableFiltering": {
+      "type": "boolean",
+      "default": false
+    },
+    "filterPosition": {
+      "type": "string",
+      "default": "top"
+    },
+    "filterStyle": {
+      "type": "string",
+      "default": "pills"
+    },
+    "cardBorderRadius": {
+      "type": "number",
+      "default": 8
+    },
+    "cardPadding": {
+      "type": "number",
+      "default": 20
+    },
+    "cardGap": {
+      "type": "number",
+      "default": 24
+    },
+    "imageHeight": {
+      "type": "number",
+      "default": 200
+    },
+    "imageFit": {
+      "type": "string",
+      "default": "cover"
+    },
+    "titleColor": {
+      "type": "string",
+      "default": "#1f2937"
+    },
+    "titleFontSize": {
+      "type": "number",
+      "default": 18
+    },
+    "titleFontWeight": {
+      "type": "string",
+      "default": "600"
+    },
+    "excerptColor": {
+      "type": "string",
+      "default": "#6b7280"
+    },
+    "excerptFontSize": {
+      "type": "number",
+      "default": 14
+    },
+    "excerptFontWeight": {
+      "type": "string",
+      "default": "400"
+    },
+    "metaColor": {
+      "type": "string",
+      "default": "#9ca3af"
+    },
+    "metaFontSize": {
+      "type": "number",
+      "default": 12
+    },
+    "metaFontWeight": {
+      "type": "string",
+      "default": "400"
+    },
+    "categoryColor": {
+      "type": "string",
+      "default": "#3b82f6"
+    },
+    "categoryBackgroundColor": {
+      "type": "string",
+      "default": "#f1f5f9"
+    },
+    "categoryBorderRadius": {
+      "type": "number",
+      "default": 16
+    },
+    "filterBorderRadius": {
+      "type": "number",
+      "default": 16
+    },
+    "paginationBorderRadius": {
+      "type": "number",
+      "default": 6
+    },
+    "enableAnimations": {
+      "type": "boolean",
+      "default": true
+    },
+    "animationType": {
+      "type": "string",
+      "default": "fadeUp"
+    },
+    "transitionAnimation": {
+      "type": "string",
+      "default": "fade"
+    },
+    "animationDuration": {
+      "type": "number",
+      "default": 0.6
+    },
+    "animationDelay": {
+      "type": "number",
+      "default": 0.1
+    },
+    "animationEase": {
+      "type": "string",
+      "default": "power2.out"
+    },
+    "enableHoverEffects": {
+      "type": "boolean",
+      "default": true
+    },
+    "hoverScale": {
+      "type": "number",
+      "default": 1.05
+    },
+    "hoverShadow": {
+      "type": "boolean",
+      "default": true
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 0.4
+    },
+    "overlayGradient": {
+      "type": "string",
+      "default": "linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%)"
+    },
+    "textAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "containerMode": {
+      "type": "string",
+      "default": "full"
+    },
+    "containerMaxWidth": {
+      "type": "object",
+      "default": {
+        "desktop": {
+          "value": 1200,
+          "unit": "px"
+        },
+        "tablet": {
+          "value": 100,
+          "unit": "%"
+        },
+        "mobile": {
+          "value": 100,
+          "unit": "%"
+        }
+      }
+    },
+    "marginTop": {
+      "type": "object",
+      "default": {
+        "desktop": 0,
+        "tablet": 0,
+        "mobile": 0
+      }
+    },
+    "marginRight": {
+      "type": "object",
+      "default": {
+        "desktop": 0,
+        "tablet": 0,
+        "mobile": 0
+      }
+    },
+    "marginBottom": {
+      "type": "object",
+      "default": {
+        "desktop": 0,
+        "tablet": 0,
+        "mobile": 0
+      }
+    },
+    "marginLeft": {
+      "type": "object",
+      "default": {
+        "desktop": 0,
+        "tablet": 0,
+        "mobile": 0
+      }
+    }
+  }
+}

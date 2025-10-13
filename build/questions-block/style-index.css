@@ -1,0 +1,140 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/questions-block/style.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+.animated-section {
+  color: #fff;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 2000;
+  overflow: hidden;
+}
+@media (max-width: 900px) {
+  .animated-section {
+    max-height: 915px;
+    height: 915px;
+  }
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: 10%;
+}
+
+.titles-column {
+  flex: 0 0 300px;
+  padding-right: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.title-item {
+  opacity: 0.5;
+  transition: all 0.3s;
+  position: relative;
+}
+.title-item.active {
+  opacity: 1;
+}
+.title-item h2 {
+  font-size: 3rem;
+  transition: all 0.3s;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--inactive-title-color, #666666);
+}
+@media (max-width: 900px) {
+  .title-item h2 {
+    font-size: 2rem;
+  }
+}
+.title-item.active h2 {
+  font-size: 5rem;
+  color: var(--title-color, #ffffff);
+}
+@media (max-width: 900px) {
+  .title-item.active h2 {
+    font-size: 3rem;
+  }
+}
+
+.section-number {
+  display: inline-block;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.content-column {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  max-width: 700px;
+  box-sizing: border-box;
+  margin-left: 0;
+}
+@media (max-width: 900px) {
+  .content-column {
+    width: 100vw;
+  }
+}
+
+.content-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(50px);
+  pointer-events: none;
+  transition: opacity 0.5s, transform 0.5s;
+  z-index: 1;
+  white-space: pre-line;
+  line-height: 1.6;
+}
+.content-item div {
+  white-space: pre-line;
+  line-height: 1.6;
+}
+.content-item.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .section-container {
+    padding-top: 60px;
+    flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .titles-column {
+    flex: none;
+    width: 100%;
+    padding-right: 0;
+    margin-bottom: 40px;
+  }
+  .content-column {
+    max-width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .section-container {
+    padding-top: 60px;
+  }
+  .section-number {
+    margin-bottom: 0px;
+  }
+}
+
+/*# sourceMappingURL=style-index.css.map*/

@@ -1,0 +1,306 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/call-to-action",
+	"version": "0.1.0",
+	"title": "Call To Action Block",
+	"category": "widgets",
+	"icon": "megaphone",
+	"description": "A call-to-action block with animated carousel and glowing gradient background.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": true,
+		"alignWide": true,
+		"anchor": true,
+		"customClassName": true,
+		"reusable": true
+	},
+	"textdomain": "cta-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"attributes": {
+		"layout": {
+			"type": "string",
+			"default": "split-left"
+		},
+		"minHeight": {
+			"type": "number",
+			"default": 400
+		},
+		"backgroundImage": {
+			"type": "object",
+			"default": null
+		},
+		"backgroundSize": {
+			"type": "string",
+			"default": "cover"
+		},
+		"backgroundPosition": {
+			"type": "string",
+			"default": "center"
+		},
+		"imageWidth": {
+			"type": "number",
+			"default": 50
+		},
+		"contentJustify": {
+			"type": "string",
+			"default": "center"
+		},
+		"contentAlign": {
+			"type": "string",
+			"default": "flex-start"
+		},
+		"contentPadding": {
+			"type": "object",
+			"default": {
+				"top": 20,
+				"right": 20,
+				"bottom": 20,
+				"left": 20
+			}
+		},
+		"contentBackgroundColor": {
+			"type": "string",
+			"default": "#f5f5f5"
+		},
+		"headerText": {
+			"type": "string",
+			"default": "Header Text"
+		},
+		"headerFontSize": {
+			"type": "object",
+			"default": {
+				"desktop": 40,
+				"tablet": 32,
+				"mobile": 24
+			}
+		},
+		"headerColor": {
+			"type": "string",
+			"default": "#333333"
+		},
+		"headerMarginBottom": {
+			"type": "object",
+			"default": {
+				"desktop": 20,
+				"tablet": 16,
+				"mobile": 12
+			}
+		},
+		"headerTextAlign": {
+			"type": "string",
+			"default": "left"
+		},
+		"headerFontWeight": {
+			"type": "string",
+			"default": "300"
+		},
+		"bodyText": {
+			"type": "string",
+			"default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ultrices est quam, sit amet sollicitudin nunc dapibus vitae. Donec congue, augue non pulvinar tempus, quam ipsum dignissim odio, id finibus neque nulla a velit. Suspendisse potenti."
+		},
+		"bodyFontSize": {
+			"type": "object",
+			"default": {
+				"desktop": 16,
+				"tablet": 14,
+				"mobile": 12
+			}
+		},
+		"bodyColor": {
+			"type": "string",
+			"default": "#666666"
+		},
+		"bodyMarginBottom": {
+			"type": "object",
+			"default": {
+				"desktop": 20,
+				"tablet": 16,
+				"mobile": 12
+			}
+		},
+		"bodyTextAlign": {
+			"type": "string",
+			"default": "left"
+		},
+		"bodyFontWeight": {
+			"type": "string",
+			"default": "300"
+		},
+		"stackedImageHeight": {
+			"type": "object",
+			"default": {
+				"desktop": {
+					"value": 500,
+					"unit": "px"
+				},
+				"tablet": {
+					"value": 400,
+					"unit": "px"
+				},
+				"mobile": {
+					"value": 300,
+					"unit": "px"
+				}
+			}
+		},
+		"stackedContentWidth": {
+			"type": "object",
+			"default": {
+				"desktop": 50,
+				"tablet": 70,
+				"mobile": 90
+			}
+		},
+		"overlayBackgroundColor": {
+			"type": "string",
+			"default": "#000000"
+		},
+		"overlayOpacity": {
+			"type": "number",
+			"default": 0.5
+		},
+		"overlayContentWidth": {
+			"type": "object",
+			"default": {
+				"desktop": 50,
+				"tablet": 70,
+				"mobile": 90
+			}
+		},
+		"overlayTextColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"overlayHeaderColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"overlayBodyColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"marginTop": {
+			"type": "object",
+			"default": {
+				"desktop": 0,
+				"tablet": 0,
+				"mobile": 0
+			}
+		},
+		"marginRight": {
+			"type": "object",
+			"default": {
+				"desktop": 0,
+				"tablet": 0,
+				"mobile": 0
+			}
+		},
+		"marginBottom": {
+			"type": "object",
+			"default": {
+				"desktop": 0,
+				"tablet": 0,
+				"mobile": 0
+			}
+		},
+		"marginLeft": {
+			"type": "object",
+			"default": {
+				"desktop": 0,
+				"tablet": 0,
+				"mobile": 0
+			}
+		},
+		"gradientType": {
+			"type": "string",
+			"default": "none"
+		},
+		"gradientColor1": {
+			"type": "string",
+			"default": "#ff4444"
+		},
+		"gradientColor2": {
+			"type": "string",
+			"default": "#ff6666"
+		},
+		"gradientDirection": {
+			"type": "string",
+			"default": "135deg"
+		},
+		"gradientOpacity": {
+			"type": "number",
+			"default": 0.1
+		}
+		,
+		"contentGradientType": {
+			"type": "string",
+			"default": "none"
+		},
+		"contentGradientColor1": {
+			"type": "string",
+			"default": "#ff4444"
+		},
+		"contentGradientColor2": {
+			"type": "string",
+			"default": "#ff6666"
+		},
+		"contentGradientDirection": {
+			"type": "string",
+			"default": "135deg"
+		},
+		"contentGradientOpacity": {
+			"type": "number",
+			"default": 0.1
+		},
+		"contentGradientOrigin": {
+			"type": "string",
+			"default": "center"
+		},
+		"overlayGradientType": {
+			"type": "string",
+			"default": "none"
+		},
+		"overlayGradientColor1": {
+			"type": "string",
+			"default": "#000000"
+		},
+		"overlayGradientColor2": {
+			"type": "string",
+			"default": "#000000"
+		},
+		"overlayGradientDirection": {
+			"type": "string",
+			"default": "135deg"
+		},
+		"overlayGradientOpacity": {
+			"type": "number",
+			"default": 0.5
+		}
+		,
+		"overlayGradientOrigin": {
+			"type": "string",
+			"default": "center"
+		},
+		"containerMode": {
+			"type": "string",
+			"default": "full"
+		},
+		"containerMaxWidth": {
+			"type": "object",
+			"default": {
+				"desktop": { "value": 1200, "unit": "px" },
+				"tablet": { "value": 100, "unit": "%" },
+				"mobile": { "value": 100, "unit": "%" }
+			}
+		},
+		"contentBorderRadius": {
+			"type": "number",
+			"default": 0
+		}
+	}
+}
