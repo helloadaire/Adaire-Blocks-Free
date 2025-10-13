@@ -223,7 +223,9 @@ const EASE_OPTIONS = [{
   label: 'back.out',
   value: 'back.out(1.2)'
 }];
-const FREE_TIER_ITEM_LIMIT = 3;
+
+// Get limit from PHP (server-side validation)
+const FREE_TIER_ITEM_LIMIT = window.adaireBlockLimits?.['tabs-block']?.limit || 3;
 function Edit({
   attributes,
   setAttributes,

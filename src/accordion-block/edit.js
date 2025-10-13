@@ -6,7 +6,9 @@ import { desktop, tablet, mobile } from '@wordpress/icons';
 import UpgradeNotice from '../components/UpgradeNotice';
 
 const EASINGS = [ 'ease', 'linear', 'ease-in', 'ease-out', 'ease-in-out' ];
-const FREE_TIER_ITEM_LIMIT = 3;
+
+// Get limit from PHP (server-side validation)
+const FREE_TIER_ITEM_LIMIT = window.adaireBlockLimits?.['accordion-block']?.limit || 3;
 
 export default function Edit( { attributes, setAttributes, clientId } ) {
     const [deviceType, setDeviceType] = useState('desktop');

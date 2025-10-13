@@ -24,7 +24,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import UpgradeNotice from '../components/UpgradeNotice';
 
-const FREE_TIER_ITEM_LIMIT = 3;
+// Get limit from PHP (server-side validation)
+const FREE_TIER_ITEM_LIMIT = window.adaireBlockLimits?.['testimonial-block']?.limit || 8;
 
 export default function Edit({ attributes, setAttributes }) {
 	const [deviceType, setDeviceType] = useState('desktop');

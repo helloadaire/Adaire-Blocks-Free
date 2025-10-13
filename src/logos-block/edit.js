@@ -15,7 +15,8 @@ import { desktop, tablet, mobile } from "@wordpress/icons";
 import { useState } from "@wordpress/element";
 import UpgradeNotice from '../components/UpgradeNotice';
 
-const FREE_TIER_ITEM_LIMIT = 3;
+// Get limit from PHP (server-side validation)
+const FREE_TIER_ITEM_LIMIT = window.adaireBlockLimits?.['logos-block']?.limit || 3;
 
 export default function Edit({ attributes, setAttributes }) {
 	const [deviceType, setDeviceType] = useState("desktop");

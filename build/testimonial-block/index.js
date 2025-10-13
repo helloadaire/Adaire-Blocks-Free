@@ -10684,7 +10684,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const FREE_TIER_ITEM_LIMIT = 3;
+// Get limit from PHP (server-side validation)
+
+const FREE_TIER_ITEM_LIMIT = window.adaireBlockLimits?.['testimonial-block']?.limit || 8;
 function Edit({
   attributes,
   setAttributes

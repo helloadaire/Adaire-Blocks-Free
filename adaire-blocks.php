@@ -205,6 +205,10 @@ require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'admin/block-migration.php';
 
 // Include diagnostics tool
 require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'admin/diagnostics.php';
+
+// Include block limits (server-side validation)
+require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'admin/block-limits.php';
+
 /**
  * Registers the block using a `blocks-manifest.php` file, which improves the performance of block type registration.
  * Behind the scenes, it also registers all assets so they can be enqueued
