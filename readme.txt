@@ -1,5 +1,5 @@
 === Adaire Blocks ===
-Contributors: adaire
+Contributors: adairedigital
 Donate link: https://adaire.digital/
 Source code: https://github.com/helloadaire/Adaire-Blocks-Free
 Tags: blocks, gutenberg, gsap, animation

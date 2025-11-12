@@ -115,6 +115,9 @@ if (is_admin()) {
     if (class_exists('AdaireBlocksSettings')) {
         AdaireBlocksSettings::get_instance();
     }
+    
+    // Include block migration tool
+    require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'admin/block-migration.php';
 }
 
 /**
