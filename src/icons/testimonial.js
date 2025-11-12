@@ -1,0 +1,64 @@
+import React from "react";
+
+const TestimonialIcon = () => {
+	return (
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<g clipPath="url(#clip0_7_34)">
+				<rect width="24" height="24" rx="5" fill="#F0F0F1" />
+				<path
+					d="M11.5 15H7C5.93913 15 4.92172 15.4214 4.17157 16.1716C3.42143 16.9217 3 17.9391 3 19V21"
+					fill="#F0F0F1"
+				/>
+				<path
+					d="M11.5 15H7C5.93913 15 4.92172 15.4214 4.17157 16.1716C3.42143 16.9217 3 17.9391 3 19V21"
+					stroke="black"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+				<path
+					d="M10 11C12.2091 11 14 9.20914 14 7C14 4.79086 12.2091 3 10 3C7.79086 3 6 4.79086 6 7C6 9.20914 7.79086 11 10 11Z"
+					fill="black"
+					stroke="black"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+				<path
+					d="M20 13H14"
+					stroke="#FF0000"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+				<path
+					d="M20 16H14"
+					stroke="black"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+				<path
+					d="M20 19H14"
+					stroke="#FF0000"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			</g>
+			<defs>
+				<clipPath id="clip0_7_34">
+					<rect width="24" height="24" rx="5" fill="white" />
+				</clipPath>
+			</defs>
+		</svg>
+	);
+};
+
+export default TestimonialIcon;

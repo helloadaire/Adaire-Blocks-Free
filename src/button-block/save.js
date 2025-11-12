@@ -21,12 +21,15 @@ export default function save({ attributes }) {
     buttonMargin,
     zIndex,
     borderRadius,
-    fontWeight
+    fontWeight,
+    borderWidth,
+    borderColor,
+    borderStyle
   } = attributes;
 
   return (
     <div {...useBlockProps.save({ 
-      className: 'ad-button-block',
+      className: 'adaire-button-block',
       id: blockId || undefined,
       style: {
         '--button-color': buttonColor || '#ffffff',
@@ -47,13 +50,16 @@ export default function save({ attributes }) {
         '--button-z-index': zIndex || '1',
         '--button-border-radius': borderRadius ? `${borderRadius}px` : '0px',
         '--button-font-weight': fontWeight || '500',
+        '--button-border-width': borderWidth ? `${borderWidth}px` : '2px',
+        '--button-border-color': borderColor || '#ff4242',
+        '--button-border-style': borderStyle || 'solid',
       }
     })}>
       <a
         href={buttonLink}
         target={openInNewTab ? '_blank' : undefined}
         rel={openInNewTab ? 'noopener noreferrer' : undefined}
-        className={`ad-button-block__link ad-button-block__link--${buttonStyle || 'underline'} ad-button-block__link--${hoverAnimation || 'slide-underline'} test2`}
+        className={`adaire-button-block__link adaire-button-block__link--${buttonStyle || 'underline'} adaire-button-block__link--${hoverAnimation || 'slide-underline'}`}
       >
         {buttonText}
         {showIcon !== false && (

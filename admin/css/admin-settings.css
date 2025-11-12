@@ -6,9 +6,15 @@
 }
 
 /* Main menu icon styling */
-#adminmenu .toplevel_page_adaire-blocks-settings .wp-menu-image:before {
-    content: "\f538" !important;
-    font-family: dashicons !important;
+#adminmenu .toplevel_page_adaire-blocks-settings .wp-menu-image:before,
+#adminmenu .current .toplevel_page_adaire-blocks-settings div.wp-menu-image:before,
+#adminmenu .wp-has-current-submenu .toplevel_page_adaire-blocks-settings div.wp-menu-image:before,
+#adminmenu a.current:hover .toplevel_page_adaire-blocks-settings div.wp-menu-image:before,
+#adminmenu a.wp-has-current-submenu:hover .toplevel_page_adaire-blocks-settings div.wp-menu-image:before,
+#adminmenu li.wp-has-current-submenu a:focus .toplevel_page_adaire-blocks-settings div.wp-menu-image:before,
+#adminmenu li.wp-has-current-submenu.opensub .toplevel_page_adaire-blocks-settings div.wp-menu-image:before,
+#adminmenu li.wp-has-current-submenu:hover .toplevel_page_adaire-blocks-settings div.wp-menu-image:before {
+    display: none !important;
 }
 
 /* Page header styling */
@@ -79,6 +85,69 @@
     position: relative;
 }
 
+.adaire-block-premium {
+    opacity: 0.6;
+    position: relative;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px dashed #dee2e6;
+}
+
+.adaire-block-premium-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.adaire-block-premium-badge .dashicons {
+    font-size: 12px;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+.adaire-block-upgrade-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+}
+
+.adaire-upgrade-button {
+    background: linear-gradient(135deg, #0073aa 0%, #005177 100%);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,115,170,0.2);
+}
+
+.adaire-upgrade-button:hover {
+    background: linear-gradient(135deg, #005177 0%, #003d5c 100%);
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,115,170,0.3);
+}
+
+.adaire-upgrade-button .dashicons {
+    font-size: 12px;
+}
+
 .adaire-block-card:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,.15);
     transform: translateY(-2px);
@@ -109,6 +178,12 @@
 .adaire-block-icon .dashicons {
     font-size: 20px;
     color: #50575e;
+}
+
+.adaire-block-icon svg {
+    width: 24px;
+    height: 24px;
+    display: block;
 }
 
 .adaire-block-info {

@@ -17,18 +17,21 @@ import {
 import { __ } from "@wordpress/i18n";
 import { useEffect, useRef, useCallback, useState } from "@wordpress/element";
 import { desktop, tablet, mobile } from '@wordpress/icons';
-import Swiper from 'swiper/bundle';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import { Splide } from '@splidejs/splide';
 import UpgradeNotice from '../components/UpgradeNotice';
+import { useBlockLimits } from '../components/useBlockLimits';
 
-// Get limit from PHP (server-side validation)
-const FREE_TIER_ITEM_LIMIT = window.adaireBlockLimits?.['testimonial-block']?.limit || 8;
+const FREE_TIER_ITEM_LIMIT = 3;
 
 export default function Edit({ attributes, setAttributes }) {
 	const [deviceType, setDeviceType] = useState('desktop');
+	
+	// Check block limits
+	const { isLimitReached, showUpgradeNotice, upgradeMessage } = useBlockLimits(
+		'testimonial-block', 
+		attributes.testimonials || [], 
+		'testimonial'
+	);
 	
 	const {
 		textColor,
@@ -51,10 +54,15 @@ export default function Edit({ attributes, setAttributes }) {
 		logoAlignment,
 		containerMode,
 		containerMaxWidth,
+		cardWidth,
+		slidesPerViewMobile,
+		slidesPerViewTablet,
+		slidesPerViewDesktop,
+		cardGap,
 	} = attributes;
 
-	const swiperRef = useRef(null);
-	const swiperInstanceRef = useRef(null);
+	const splideRef = useRef(null);
+	const splideInstanceRef = useRef(null);
 	const updateTimeoutRef = useRef(null);
 
 	const blockProps = useBlockProps({
@@ -74,9 +82,18 @@ export default function Edit({ attributes, setAttributes }) {
 			"--container-max-width": `${containerMaxWidth?.desktop?.value ?? containerMaxWidth?.value ?? 1200}${containerMaxWidth?.desktop?.unit ?? containerMaxWidth?.unit ?? 'px'}`,
 			"--container-max-width-tablet": `${containerMaxWidth?.tablet?.value ?? 100}${containerMaxWidth?.tablet?.unit ?? '%'}`,
 			"--container-max-width-mobile": `${containerMaxWidth?.mobile?.value ?? 100}${containerMaxWidth?.mobile?.unit ?? '%'}`,
+			"--card-width-desktop": `${cardWidth?.desktop?.value ?? 100}${cardWidth?.desktop?.unit ?? '%'}`,
+			"--card-width-tablet": `${cardWidth?.tablet?.value ?? 100}${cardWidth?.tablet?.unit ?? '%'}`,
+			"--card-width-mobile": `${cardWidth?.mobile?.value ?? 100}${cardWidth?.mobile?.unit ?? '%'}`,
+			"--card-gap-desktop": `${cardGap?.desktop?.value ?? 30}${cardGap?.desktop?.unit ?? 'px'}`,
+			"--card-gap-tablet": `${cardGap?.tablet?.value ?? 20}${cardGap?.tablet?.unit ?? 'px'}`,
+			"--card-gap-mobile": `${cardGap?.mobile?.value ?? 15}${cardGap?.mobile?.unit ?? 'px'}`,
 			...(blockBackgroundColor && { background: blockBackgroundColor })
 		},
 		'data-slides-per-view': slidesPerView || 3,
+		'data-slides-per-view-mobile': slidesPerViewMobile || 1,
+		'data-slides-per-view-tablet': slidesPerViewTablet || 2,
+		'data-slides-per-view-desktop': slidesPerViewDesktop || 3,
 		'data-space-between': spaceBetween || 50,
 		'data-loop': loop ? 'true' : 'false',
 		'data-navigation': navigation ? 'true' : 'false',
@@ -88,14 +105,14 @@ export default function Edit({ attributes, setAttributes }) {
 		id: blockId || undefined
 	});
 
-	// Initialize Swiper in editor
+	// Initialize Splide in editor
 	useEffect(() => {
 		if (updateTimeoutRef.current) {
 			clearTimeout(updateTimeoutRef.current);
 		}
 		
 		updateTimeoutRef.current = setTimeout(() => {
-			if (swiperRef.current && testimonials.length > 0) {
+			if (splideRef.current && testimonials.length > 0) {
 				// Get configuration from attributes
 				const slidesPerViewValue = parseInt(slidesPerView) || 3;
 				const spaceBetweenValue = parseInt(spaceBetween) || 50;
@@ -107,99 +124,79 @@ export default function Edit({ attributes, setAttributes }) {
 				// Count actual slides
 				const totalSlides = testimonials.length;
 				
-				// Loop only works properly if we have more slides than slidesPerView
-				const shouldLoop = loopValue && totalSlides >= 3;
+				// Splide loop works better with fewer restrictions
+				const shouldLoop = loopValue && totalSlides > 1;
 
 				// Check if we need to reinitialize or just update
-				const needsReinit = !swiperInstanceRef.current || 
-					swiperInstanceRef.current.params.slidesPerView !== slidesPerViewValue ||
-					swiperInstanceRef.current.params.spaceBetween !== spaceBetweenValue ||
-					swiperInstanceRef.current.params.loop !== shouldLoop;
+				const needsReinit = !splideInstanceRef.current;
 
 				if (needsReinit) {
 					// Destroy existing instance if it exists
-					if (swiperInstanceRef.current) {
-						swiperInstanceRef.current.destroy(true, true);
-						swiperInstanceRef.current = null;
+					if (splideInstanceRef.current) {
+						splideInstanceRef.current.destroy();
+						splideInstanceRef.current = null;
 					}
 
 					// Use requestAnimationFrame for smoother updates
 					requestAnimationFrame(() => {
 						try {
-							const swiperInstance = new Swiper(swiperRef.current, {
-								// Basic configuration
-								direction: 'horizontal',
-								loop: false, // Disable loop in preview
-								spaceBetween: spaceBetweenValue,
-								slidesPerView: slidesPerViewValue,
-								centeredSlides: true,
-								initialSlide: 0,
-								allowTouchMove: false, // Disable dragging/swiping
-								simulateTouch: false, // Disable touch simulation
-								enabled: false, // Completely disable Swiper functionality
-								
-								// Disable all navigation in preview
-								pagination: false,
-								navigation: false,
-								scrollbar: false,
-								
-								// Responsive breakpoints
+							// Determine current screen size and appropriate slides per view for editor
+							const getCurrentSlidesPerView = () => {
+								if (window.innerWidth >= 1024) {
+									return slidesPerViewDesktop || 3;
+								} else if (window.innerWidth >= 768) {
+									return slidesPerViewTablet || 2;
+								} else {
+									return slidesPerViewMobile || 1;
+								}
+							};
+
+							// Determine current gap based on screen size
+							const getCurrentGap = () => {
+								if (window.innerWidth >= 1024) {
+									return cardGap?.desktop?.value ?? 30;
+								} else if (window.innerWidth >= 768) {
+									return cardGap?.tablet?.value ?? 20;
+								} else {
+									return cardGap?.mobile?.value ?? 15;
+								}
+							};
+
+							const splideInstance = new Splide(splideRef.current, {
+								type: shouldLoop ? 'loop' : 'slide',
+								perPage: getCurrentSlidesPerView(),
+								perMove: 1,
+								gap: getCurrentGap(),
+								padding: '0',
+								arrows: false, // Disable arrows in editor
+								pagination: false, // Disable pagination in editor
+								drag: false, // Disable drag in editor
+								focus: 'center',
+								trimSpace: false,
+								updateOnMove: true,
+								resetProgress: false,
+								speed: 600,
+								easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
 								breakpoints: {
-									320: {
-										slidesPerView: 1,
-										spaceBetween: 20,
-										centeredSlides: false,
-										loop: loopValue && totalSlides >= 3,
+									1023: {
+										perPage: slidesPerViewTablet || 2,
+										gap: cardGap?.tablet?.value ?? 20,
 									},
-									768: {
-										slidesPerView: Math.min(2.2, slidesPerViewValue),
-										spaceBetween: 30,
-										centeredSlides: true,
-										loop: loopValue && totalSlides >= 3,
-									},
-									1024: {
-										slidesPerView: Math.min(slidesPerViewValue + 0.5, totalSlides),
-										spaceBetween: spaceBetweenValue,
-										centeredSlides: true,
-										loop: loopValue && totalSlides >= 3,
+									767: {
+										perPage: slidesPerViewMobile || 1,
+										gap: cardGap?.mobile?.value ?? 15,
 									}
 								}
 							});
 							
-							swiperInstanceRef.current = swiperInstance;
+							// Mount the Splide instance
+							splideInstance.mount();
+							splideInstanceRef.current = splideInstance;
 							
 						} catch (error) {
-							console.error('Error creating Swiper in editor:', error);
+							console.error('Error creating Splide in editor:', error);
 						}
 					});
-				} else {
-					// Just update the existing instance without reinitializing
-					if (swiperInstanceRef.current) {
-						// Update navigation visibility
-						if (navigationValue) {
-							swiperInstanceRef.current.navigation.init();
-							swiperInstanceRef.current.navigation.update();
-						} else {
-							swiperInstanceRef.current.navigation.destroy();
-						}
-						
-						// Update pagination visibility
-						if (paginationValue) {
-							swiperInstanceRef.current.pagination.init();
-							swiperInstanceRef.current.pagination.render();
-							swiperInstanceRef.current.pagination.update();
-						} else {
-							swiperInstanceRef.current.pagination.destroy();
-						}
-						
-						// Update scrollbar visibility
-						if (scrollbarValue) {
-							swiperInstanceRef.current.scrollbar.init();
-							swiperInstanceRef.current.scrollbar.updateSize();
-						} else {
-							swiperInstanceRef.current.scrollbar.destroy();
-						}
-					}
 				}
 			}
 		}, 150); // 150ms debounce
@@ -209,12 +206,12 @@ export default function Edit({ attributes, setAttributes }) {
 			if (updateTimeoutRef.current) {
 				clearTimeout(updateTimeoutRef.current);
 			}
-			if (swiperInstanceRef.current) {
-				swiperInstanceRef.current.destroy(true, true);
-				swiperInstanceRef.current = null;
+			if (splideInstanceRef.current) {
+				splideInstanceRef.current.destroy();
+				splideInstanceRef.current = null;
 			}
 		};
-	}, [testimonials, slidesPerView, spaceBetween, loop, navigation, pagination, scrollbar, arrowColor, dotColor]);
+	}, [testimonials, slidesPerView, spaceBetween, loop, navigation, pagination, scrollbar, arrowColor, dotColor, slidesPerViewMobile, slidesPerViewTablet, slidesPerViewDesktop]);
 
 	// Testimonial management functions
 	const updateTestimonial = (index, field, value) => {
@@ -227,7 +224,7 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 
 	const addTestimonial = () => {
-		if (testimonials.length >= FREE_TIER_ITEM_LIMIT) {
+		if (isLimitReached) {
 			return; // Don't add if limit reached
 		}
 		const newTestimonial = {
@@ -354,6 +351,56 @@ export default function Edit({ attributes, setAttributes }) {
 						max={5}
 					/>
 
+					<hr style={{ margin: '20px 0' }} />
+					<p style={{ fontWeight: 600, marginBottom: '12px' }}>
+						{__('Responsive Slides Per View', 'testimonial-block')}
+					</p>
+
+					<TextControl
+						label={__('Mobile (< 768px)', 'testimonial-block')}
+						value={slidesPerViewMobile}
+						type="number"
+						onChange={(value) => {
+							const num = Number(value);
+							if (!isNaN(num) && value !== "") {
+								setAttributes({ slidesPerViewMobile: num });
+							}
+						}}
+						min={1}
+						max={5}
+						help={__('Number of slides visible on mobile devices', 'testimonial-block')}
+					/>
+
+					<TextControl
+						label={__('Tablet (768px - 1024px)', 'testimonial-block')}
+						value={slidesPerViewTablet}
+						type="number"
+						onChange={(value) => {
+							const num = Number(value);
+							if (!isNaN(num) && value !== "") {
+								setAttributes({ slidesPerViewTablet: num });
+							}
+						}}
+						min={1}
+						max={5}
+						help={__('Number of slides visible on tablet devices', 'testimonial-block')}
+					/>
+
+					<TextControl
+						label={__('Desktop (> 1024px)', 'testimonial-block')}
+						value={slidesPerViewDesktop}
+						type="number"
+						onChange={(value) => {
+							const num = Number(value);
+							if (!isNaN(num) && value !== "") {
+								setAttributes({ slidesPerViewDesktop: num });
+							}
+						}}
+						min={1}
+						max={5}
+						help={__('Number of slides visible on desktop devices', 'testimonial-block')}
+					/>
+
 					<TextControl
 						label="Space Between Slides (px)"
 						value={spaceBetween}
@@ -466,6 +513,284 @@ export default function Edit({ attributes, setAttributes }) {
 						max={2000}
 						help="Maximum width of the carousel container"
 					/>
+				</PanelBody>
+
+				<PanelBody title="Card Width Settings" initialOpen={false}>
+					<p style={{ marginBottom: '16px', color: '#666' }}>
+						{__('Control the width of individual testimonial cards at different screen sizes', 'testimonial-block')}
+					</p>
+					
+					<p style={{ fontWeight: 600, marginBottom: '8px' }}>
+						{__('Desktop Card Width', 'testimonial-block')}
+					</p>
+					<div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+						<TextControl
+							type="number"
+							value={cardWidth?.desktop?.value ?? 100}
+							onChange={(v) =>
+								setAttributes({
+									cardWidth: {
+										...(cardWidth || {}),
+										desktop: {
+											...(cardWidth?.desktop || {}),
+											value: Number(v),
+										},
+									},
+								})
+							}
+						/>
+						<ButtonGroup>
+							{['px', '%', 'rem', 'vw'].map((u) => (
+								<Button
+									key={u}
+									isPrimary={(cardWidth?.desktop?.unit ?? '%') === u}
+									isSecondary={(cardWidth?.desktop?.unit ?? '%') !== u}
+									onClick={() =>
+										setAttributes({
+											cardWidth: {
+												...(cardWidth || {}),
+												desktop: {
+													...(cardWidth?.desktop || {}),
+													unit: u,
+												},
+											},
+										})
+									}
+								>
+									{u}
+								</Button>
+							))}
+						</ButtonGroup>
+					</div>
+
+					<p style={{ fontWeight: 600, marginBottom: '8px' }}>
+						{__('Tablet Card Width', 'testimonial-block')}
+					</p>
+					<div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+						<TextControl
+							type="number"
+							value={cardWidth?.tablet?.value ?? 100}
+							onChange={(v) =>
+								setAttributes({
+									cardWidth: {
+										...(cardWidth || {}),
+										tablet: {
+											...(cardWidth?.tablet || {}),
+											value: Number(v),
+										},
+									},
+								})
+							}
+						/>
+						<ButtonGroup>
+							{['px', '%', 'rem', 'vw'].map((u) => (
+								<Button
+									key={u}
+									isPrimary={(cardWidth?.tablet?.unit ?? '%') === u}
+									isSecondary={(cardWidth?.tablet?.unit ?? '%') !== u}
+									onClick={() =>
+										setAttributes({
+											cardWidth: {
+												...(cardWidth || {}),
+												tablet: {
+													...(cardWidth?.tablet || {}),
+													unit: u,
+												},
+											},
+										})
+									}
+								>
+									{u}
+								</Button>
+							))}
+						</ButtonGroup>
+					</div>
+
+					<p style={{ fontWeight: 600, marginBottom: '8px' }}>
+						{__('Mobile Card Width', 'testimonial-block')}
+					</p>
+					<div style={{ display: 'flex', gap: '8px' }}>
+						<TextControl
+							type="number"
+							value={cardWidth?.mobile?.value ?? 100}
+							onChange={(v) =>
+								setAttributes({
+									cardWidth: {
+										...(cardWidth || {}),
+										mobile: {
+											...(cardWidth?.mobile || {}),
+											value: Number(v),
+										},
+									},
+								})
+							}
+						/>
+						<ButtonGroup>
+							{['px', '%', 'rem', 'vw'].map((u) => (
+								<Button
+									key={u}
+									isPrimary={(cardWidth?.mobile?.unit ?? '%') === u}
+									isSecondary={(cardWidth?.mobile?.unit ?? '%') !== u}
+									onClick={() =>
+										setAttributes({
+											cardWidth: {
+												...(cardWidth || {}),
+												mobile: {
+													...(cardWidth?.mobile || {}),
+													unit: u,
+												},
+											},
+										})
+									}
+								>
+									{u}
+								</Button>
+							))}
+						</ButtonGroup>
+					</div>
+
+					<p style={{ marginTop: '16px', fontSize: '12px', color: '#666', fontStyle: 'italic' }}>
+						{__('💡 Tip: Use 100% for full-width cards on mobile, or adjust to create partial views', 'testimonial-block')}
+					</p>
+				</PanelBody>
+
+				<PanelBody title="Card Gap Settings" initialOpen={false}>
+					<p style={{ marginBottom: '16px', color: '#666' }}>
+						{__('Control the spacing between testimonial cards at different screen sizes', 'testimonial-block')}
+					</p>
+					
+					<p style={{ fontWeight: 600, marginBottom: '8px' }}>
+						{__('Desktop Card Gap', 'testimonial-block')}
+					</p>
+					<div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+						<TextControl
+							type="number"
+							value={cardGap?.desktop?.value ?? 30}
+							onChange={(v) =>
+								setAttributes({
+									cardGap: {
+										...(cardGap || {}),
+										desktop: {
+											...(cardGap?.desktop || {}),
+											value: Number(v),
+										},
+									},
+								})
+							}
+						/>
+						<ButtonGroup>
+							{['px', '%', 'rem', 'vw'].map((u) => (
+								<Button
+									key={u}
+									isPrimary={(cardGap?.desktop?.unit ?? 'px') === u}
+									isSecondary={(cardGap?.desktop?.unit ?? 'px') !== u}
+									onClick={() =>
+										setAttributes({
+											cardGap: {
+												...(cardGap || {}),
+												desktop: {
+													...(cardGap?.desktop || {}),
+													unit: u,
+												},
+											},
+										})
+									}
+								>
+									{u}
+								</Button>
+							))}
+						</ButtonGroup>
+					</div>
+
+					<p style={{ fontWeight: 600, marginBottom: '8px' }}>
+						{__('Tablet Card Gap', 'testimonial-block')}
+					</p>
+					<div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+						<TextControl
+							type="number"
+							value={cardGap?.tablet?.value ?? 20}
+							onChange={(v) =>
+								setAttributes({
+									cardGap: {
+										...(cardGap || {}),
+										tablet: {
+											...(cardGap?.tablet || {}),
+											value: Number(v),
+										},
+									},
+								})
+							}
+						/>
+						<ButtonGroup>
+							{['px', '%', 'rem', 'vw'].map((u) => (
+								<Button
+									key={u}
+									isPrimary={(cardGap?.tablet?.unit ?? 'px') === u}
+									isSecondary={(cardGap?.tablet?.unit ?? 'px') !== u}
+									onClick={() =>
+										setAttributes({
+											cardGap: {
+												...(cardGap || {}),
+												tablet: {
+													...(cardGap?.tablet || {}),
+													unit: u,
+												},
+											},
+										})
+									}
+								>
+									{u}
+								</Button>
+							))}
+						</ButtonGroup>
+					</div>
+
+					<p style={{ fontWeight: 600, marginBottom: '8px' }}>
+						{__('Mobile Card Gap', 'testimonial-block')}
+					</p>
+					<div style={{ display: 'flex', gap: '8px' }}>
+						<TextControl
+							type="number"
+							value={cardGap?.mobile?.value ?? 15}
+							onChange={(v) =>
+								setAttributes({
+									cardGap: {
+										...(cardGap || {}),
+										mobile: {
+											...(cardGap?.mobile || {}),
+											value: Number(v),
+										},
+									},
+								})
+							}
+						/>
+						<ButtonGroup>
+							{['px', '%', 'rem', 'vw'].map((u) => (
+								<Button
+									key={u}
+									isPrimary={(cardGap?.mobile?.unit ?? 'px') === u}
+									isSecondary={(cardGap?.mobile?.unit ?? 'px') !== u}
+									onClick={() =>
+										setAttributes({
+											cardGap: {
+												...(cardGap || {}),
+												mobile: {
+													...(cardGap?.mobile || {}),
+													unit: u,
+												},
+											},
+										})
+									}
+								>
+									{u}
+								</Button>
+							))}
+						</ButtonGroup>
+					</div>
+
+					<p style={{ marginTop: '16px', fontSize: '12px', color: '#666', fontStyle: 'italic' }}>
+						{__('💡 Tip: Smaller gaps on mobile create a more compact layout', 'testimonial-block')}
+					</p>
 				</PanelBody>
 
 				<PanelBody title="Testimonials" initialOpen={true}>
@@ -590,12 +915,16 @@ export default function Edit({ attributes, setAttributes }) {
 						isPrimary
 						onClick={addTestimonial}
 						style={{ marginTop: "10px" }}
-						disabled={ testimonials.length >= FREE_TIER_ITEM_LIMIT }
+						disabled={ isLimitReached }
 					>
 						Add New Testimonial
 					</Button>
-					{ testimonials.length >= FREE_TIER_ITEM_LIMIT && (
-						<UpgradeNotice itemType="testimonial" />
+					{ showUpgradeNotice && (
+						<UpgradeNotice 
+							variant="inline"
+							itemType="testimonial"
+							message={upgradeMessage}
+						/>
 					) }
 				</PanelBody>
 
@@ -686,59 +1015,59 @@ export default function Edit({ attributes, setAttributes }) {
 			<div {...blockProps}>
 				<div className="ad-carousel-text-block__testimonial-carousel">
 					<div 
-						className="swiper" 
-						ref={swiperRef}
+						className="splide" 
+						ref={splideRef}
 					>
-						<div className="swiper-wrapper">
-							{testimonials.map((testimonial, index) => (
-								<div key={index} className="swiper-slide">
-												<div 
-													className="ad-carousel-text-block__testimonial-card"
-													style={{
-														"--logo-size": `${logoSize || 60}px`,
-													}}
-												>
-													<div className="ad-carousel-text-block__company-logo">
-											{testimonial.companyLogo ? (
-												<>
-												<img
-													src={testimonial.companyLogo}
-													alt={testimonial.companyName}
-													style={{
-														height: `${logoSize || 60}px`,
-														objectFit: "contain",
-														width: "auto"
-													}}
-													loading="lazy"
-													onError={(e) => {
-														e.target.style.display = 'none';
-														e.target.nextSibling.style.display = 'block';
-													}}
-												/>
+						<div className="splide__track">
+							<div className="splide__list">
+								{testimonials.map((testimonial, index) => (
+									<div key={index} className="splide__slide">
 													<div 
-														className="ad-carousel-text-block__logo-placeholder"
-														style={{ display: 'none' }}
+														className="ad-carousel-text-block__testimonial-card"
+														style={{
+															"--logo-size": `${logoSize || 60}px`,
+														}}
 													>
+														<div className="ad-carousel-text-block__company-logo">
+												{testimonial.companyLogo ? (
+													<>
+													<img
+														src={testimonial.companyLogo}
+														alt={testimonial.companyName}
+														style={{
+															height: `${logoSize || 60}px`,
+															objectFit: "contain",
+															width: "auto"
+														}}
+														loading="lazy"
+														onError={(e) => {
+															e.target.style.display = 'none';
+															e.target.nextSibling.style.display = 'block';
+														}}
+													/>
+														<div 
+															className="ad-carousel-text-block__logo-placeholder"
+															style={{ display: 'none' }}
+														>
+															{testimonial.companyName}
+														</div>
+													</>
+												) : (
+																<div className="ad-carousel-text-block__logo-placeholder">
 														{testimonial.companyName}
 													</div>
-												</>
-											) : (
-															<div className="ad-carousel-text-block__logo-placeholder">
-													{testimonial.companyName}
-												</div>
-											)}
-										</div>
-													<div className="ad-carousel-text-block__quote">"{testimonial.quote}"</div>
-													<div className="ad-carousel-text-block__author">
-														<div className="ad-carousel-text-block__name">{testimonial.authorName}</div>
-														<div className="ad-carousel-text-block__title">{testimonial.authorTitle}</div>
+												)}
+											</div>
+														<div className="ad-carousel-text-block__quote">"{testimonial.quote}"</div>
+														<div className="ad-carousel-text-block__author">
+															<div className="ad-carousel-text-block__name">{testimonial.authorName}</div>
+															<div className="ad-carousel-text-block__title">{testimonial.authorTitle}</div>
+											</div>
 										</div>
 									</div>
-								</div>
-							))}
+								))}
+							</div>
 						</div>
-
-						{/* Navigation elements hidden in preview for static display */}
 					</div>
 				</div>
 			</div>

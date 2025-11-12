@@ -13,7 +13,11 @@ import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
 
+// Import icon directly
+import ButtonIcon from '../icons/button';
+
 registerBlockType(metadata.name, {
 	edit: Edit,
 	save,
+	icon: ButtonIcon,
 }); 

@@ -22,6 +22,9 @@ import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
 
+// Import icon directly
+import LogosIcon from '../icons/logos';
+
 /**
  * Register the logos block
  */
@@ -35,4 +38,5 @@ registerBlockType(metadata.name, {
 	 * @see ./save.js
 	 */
 	save,
+	icon: LogosIcon,
 });

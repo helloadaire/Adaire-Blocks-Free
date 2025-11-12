@@ -1,100 +1,123 @@
-import Swiper from 'swiper/bundle';
+import { Splide } from '@splidejs/splide';
 
 // Frontend JavaScript for Carousel Text Block
 document.addEventListener('DOMContentLoaded', function() {
     const carouselBlocks = document.querySelectorAll('.ad-carousel-text-block');
     
     carouselBlocks.forEach(function(block) {
-        const swiperContainer = block.querySelector(".swiper");
-        console.log(swiperContainer);
-        if (swiperContainer) {
+        const splideContainer = block.querySelector(".splide");
+        if (splideContainer) {
             // Get configuration from data attributes
             const slidesPerView = parseInt(block.dataset.slidesPerView) || 3;
+            const slidesPerViewMobile = parseInt(block.dataset.slidesPerViewMobile) || 1;
+            const slidesPerViewTablet = parseInt(block.dataset.slidesPerViewTablet) || 2;
+            const slidesPerViewDesktop = parseInt(block.dataset.slidesPerViewDesktop) || 3;
             const spaceBetween = parseInt(block.dataset.spaceBetween) || 50;
+            const cardGapDesktop = parseInt(block.dataset.cardGapDesktop) || 30;
+            const cardGapTablet = parseInt(block.dataset.cardGapTablet) || 20;
+            const cardGapMobile = parseInt(block.dataset.cardGapMobile) || 15;
             const loop = block.dataset.loop === 'true';
             const navigation = block.dataset.navigation === 'true';
             const pagination = block.dataset.pagination === 'true';
             const scrollbar = block.dataset.scrollbar === 'true';
             
             // Count actual slides
-            const totalSlides = swiperContainer.querySelectorAll('.swiper-slide').length;
+            const totalSlides = splideContainer.querySelectorAll('.splide__slide').length;
             
-            // Loop only works properly if we have more slides than slidesPerView
-            // For proper looping, we need at least 3 slides
-            const shouldLoop = loop && totalSlides >= 3;
-            
-            // Check if navigation elements exist
-            const prevButton = swiperContainer.querySelector('.swiper-button-prev');
-            const nextButton = swiperContainer.querySelector('.swiper-button-next');
-            const paginationEl = swiperContainer.querySelector('.swiper-pagination');
-        
+            // Splide loop works better with fewer restrictions
+            const shouldLoop = loop && totalSlides > 1;
             
             try {
-                const swiperInstance = new Swiper(swiperContainer, {
-                    // Basic configuration
-                    direction: 'horizontal',
-                    loop: shouldLoop,
-                    spaceBetween: spaceBetween,
-                    slidesPerView: slidesPerView,
-                    centeredSlides: true,
-                    initialSlide: 0,
-                    allowTouchMove: false, // Disable dragging/swiping
-                    simulateTouch: false, // Disable touch simulation
-                    
-                    // Callbacks
-                    on: {
-                        init: function() {
-                        },
-                        slideChange: function() {
-                           
-                        }
-                    },
-                    
-                    // Pagination
-                    pagination: pagination ? {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    } : false,
-                    
-                    // Navigation arrows
-                    navigation: navigation ? {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    } : false,
-                    
-                    // Scrollbar
-                    scrollbar: scrollbar ? {
-                        el: '.swiper-scrollbar',
-                        draggable: true,
-                    } : false,
-                    
-                    // Responsive breakpoints
+                // Determine current screen size and appropriate slides per view
+                const getCurrentSlidesPerView = () => {
+                    if (window.innerWidth >= 1024) {
+                        return slidesPerViewDesktop;
+                    } else if (window.innerWidth >= 768) {
+                        return slidesPerViewTablet;
+                    } else {
+                        return slidesPerViewMobile;
+                    }
+                };
+
+                const splideInstance = new Splide(splideContainer, {
+                    type: shouldLoop ? 'loop' : 'slide',
+                    perPage: getCurrentSlidesPerView(),
+                    perMove: 1,
+                    gap: cardGapDesktop,
+                    padding: '0',
+                    arrows: navigation,
+                    pagination: pagination,
+                    drag: 'free',
+                    focus: 'center',
+                    trimSpace: false,
+                    updateOnMove: true,
+                    resetProgress: false,
+                    speed: 600,
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
                     breakpoints: {
-                        320: {
-                            slidesPerView: 1,
-                            spaceBetween: 20,
-                            centeredSlides: false,
-                            loop: loop && totalSlides >= 3,
+                        1023: {
+                            perPage: slidesPerViewTablet,
+                            gap: cardGapTablet,
                         },
-                        768: {
-                            slidesPerView: Math.min(2.2, slidesPerView),
-                            spaceBetween: 30,
-                            centeredSlides: true,
-                            loop: loop && totalSlides >= 3,
-                        },
-                        1024: {
-                            slidesPerView: Math.min(slidesPerView + 0.5, totalSlides),
-                            spaceBetween: spaceBetween,
-                            centeredSlides: true,
-                            loop: loop && totalSlides >= 3,
+                        767: {
+                            perPage: slidesPerViewMobile,
+                            gap: cardGapMobile,
                         }
                     }
                 });
                 
-               
+                // Mount the Splide instance
+                splideInstance.mount();
+                
+                // Store the instance for potential cleanup
+                splideContainer.splideInstance = splideInstance;
+                
+                // Add cleanup on page unload
+                window.addEventListener('beforeunload', function() {
+                    if (splideContainer.splideInstance) {
+                        splideContainer.splideInstance.destroy();
+                    }
+                });
+                
+                // Handle window resize for responsive updates
+                let resizeTimeout;
+                window.addEventListener('resize', function() {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(function() {
+                        if (splideContainer.splideInstance) {
+                            // Update perPage and gap based on current screen size
+                            const newPerPage = getCurrentSlidesPerView();
+                            let newGap;
+                            if (window.innerWidth >= 1024) {
+                                newGap = cardGapDesktop;
+                            } else if (window.innerWidth >= 768) {
+                                newGap = cardGapTablet;
+                            } else {
+                                newGap = cardGapMobile;
+                            }
+                            splideContainer.splideInstance.options.perPage = newPerPage;
+                            splideContainer.splideInstance.options.gap = newGap;
+                            splideContainer.splideInstance.refresh();
+                        }
+                    }, 250);
+                });
+                
+                console.log('Splide initialized successfully', {
+                    slidesPerView,
+                    slidesPerViewDesktop,
+                    slidesPerViewTablet,
+                    slidesPerViewMobile,
+                    cardGapDesktop,
+                    cardGapTablet,
+                    cardGapMobile,
+                    totalSlides,
+                    shouldLoop,
+                    currentWidth: window.innerWidth,
+                    currentPerPage: getCurrentSlidesPerView()
+                });
                 
             } catch (error) {
-                console.error('Error creating Swiper:', error);
+                console.error('Error creating Splide:', error);
             }
         }
     });

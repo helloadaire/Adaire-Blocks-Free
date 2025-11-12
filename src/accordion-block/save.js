@@ -78,7 +78,7 @@ export default function save( { attributes } ) {
     return (
         <div { ...blockProps }>
 
-            <div className="adaire-accordion__container test">
+            <div className={`adaire-accordion__container ${containerMode === 'constrained' ? 'is-constrained' : ''}`}>
                 <div className="adaire-accordion__list">
                 { items.map( ( item, index ) => (
                     <div

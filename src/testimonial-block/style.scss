@@ -1,8 +1,5 @@
-// Import Swiper CSS
-@import 'swiper/css';
-@import 'swiper/css/navigation';
-@import 'swiper/css/pagination';
-@import 'swiper/css/scrollbar';
+// Import Splide CSS
+@import '@splidejs/splide/css';
 
 .ad-carousel-text-block {
 	display: block;
@@ -36,89 +33,94 @@
 			max-width: 100% !important;
 		}
 		
-		.swiper {
+		.splide {
 			width: 100%;
 			height: auto;
 			padding: 20px 0 60px 0;
 			overflow: hidden;
 			transition: none; // Prevent layout shifts
 			
-			.swiper-wrapper {
+			.splide__track {
+				overflow: visible;
+			}
+			
+			.splide__list {
 				align-items: stretch;
 			}
 			
-			.swiper-slide {
+			.splide__slide {
 				height: auto;
 				display: flex;
 				justify-content: center;
-				padding: 0 var(--card-gap, 20px);
+				padding: 0 var(--card-gap-desktop, 30px);
 				box-sizing: border-box;
 				transition: none; // Prevent layout shifts
+				
+				// Responsive card gaps
+				@media (max-width: 1024px) {
+					padding: 0 var(--card-gap-tablet, 20px);
+				}
+				
+				@media (max-width: 768px) {
+					padding: 0 var(--card-gap-mobile, 15px);
+				}
 			}
 			
-			.swiper-pagination {
+			.splide__pagination {
 				bottom: 20px;
 				
-				.swiper-pagination-bullet {
+				.splide__pagination__page {
 					width: 12px;
 					height: 12px;
 					background: #d1d5db;
 					opacity: 1;
 					margin: 0 6px;
 					cursor: pointer !important; // Override custom cursor for dots
+					border-radius: 50%;
 					
-					&.swiper-pagination-bullet-active {
+					&.is-active {
 						background: var(--dot-color);
 					}
 				}
 			}
 			
 			// Navigation arrows
-			.swiper-button-prev,
-			.swiper-button-next {
+			.splide__arrow {
 				width: 44px;
 				height: 44px;
 				margin-top: -22px;
 				transition: all 0.3s ease;
 				border: none;
-				color: var(--arrow-color);
+				background: transparent;
 				cursor: pointer !important; // Override custom cursor for arrows
+				opacity: 0.8;
 
 				&:focus{
 					outline-style: none;
 				}
 				
-				&:after {
-					font-size: 18px;
-					font-weight: bold;
-					color: #333;
+				&:hover {
+					opacity: 1;
 				}
-			}
-			
-			.swiper-button-prev {
-				left: 10px;
-			}
-			
-			.swiper-button-next {
-				right: 10px;
-			}
-			
-			// Scrollbar
-			.swiper-scrollbar {
-				background: rgba(0, 0, 0, 0.1);
-				border-radius: 10px;
-				height: 6px;
-				bottom: 10px;
 				
-				.swiper-scrollbar-drag {
-					background: #8b5cf6;
-					border-radius: 10px;
+				svg {
+					fill: var(--arrow-color, #333);
+					width: 24px;
+					height: 24px;
 				}
+			}
+			
+			.splide__arrow--prev {
+				left: -12px;
+			}
+			
+			.splide__arrow--next {
+				right: -8px;
 			}
 		}
 	}
 
-	// Testimonial card styles - these are direct children of swiper-slide
+	// Testimonial card styles - these are direct children of splide__slide
 	&__testimonial-card {
 		background: var(--card-bg-color, #ffffff);
 		border-radius: 16px;
@@ -129,11 +131,20 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		width: 100%;
+		width: var(--card-width-desktop, 100%);
 		max-width: 100%;
 		box-sizing: border-box;
 		transition: none; // Prevent layout shifts
 		overflow: visible; // Allow images to extend if needed
+		
+		// Responsive card widths
+		@media (max-width: 1024px) {
+			width: var(--card-width-tablet, 100%);
+		}
+		
+		@media (max-width: 768px) {
+			width: var(--card-width-mobile, 100%);
+		}
 	}
 	
 	// Child elements of testimonial card
@@ -170,7 +181,7 @@
 	}
 	
 	&__author {
-		// No styles needed on parent
+		// Author container - styles applied to children
 	}
 	
 	&__name {
@@ -184,5 +195,20 @@
 		font-size: 14px;
 		color: var(--text-color, #666);
 		font-weight: 400;
+	}
+}
+
+@media (max-width: 600px){
+	.splide__arrow {
+		width: 20px !important;
+		height: 20px !important;
+	}
+
+	.splide__arrow--prev {
+		left: -5px !important; 
+	}
+	
+	.splide__arrow--next {
+		right: -5px !important;
 	}
 }

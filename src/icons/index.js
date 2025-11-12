@@ -1,0 +1,16 @@
+export { default as AccordionIcon } from "./accordion.js";
+export { default as ButtonIcon } from "./button.js";
+export { default as CallToActionIcon } from "./call-to-action.js";
+export { default as CounterIcon } from "./counter.js";
+export { default as CtaIcon } from "./cta.js";
+export { default as LogosIcon } from "./logos.js";
+export { default as ParticlesIcon } from "./particles.js";
+export { default as PortfolioIcon } from "./portfolio.js";
+export { default as PostsGridIcon } from "./posts-grid.js";
+export { default as ProjectIcon } from "./project.js";
+export { default as QuestionsIcon } from "./questions.js";
+export { default as ScrollTextIcon } from "./scroll-text.js";
+export { default as TabPanelIcon } from "./tab-panel.js";
+export { default as TabsIcon } from "./tabs.js";
+export { default as TestimonialIcon } from "./testimonial.js";
+export { default as VideoHeroIcon } from "./video-hero.js";

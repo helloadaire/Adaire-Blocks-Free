@@ -23,11 +23,14 @@ export default function Edit({ attributes, setAttributes }) {
     buttonMargin,
     zIndex,
     borderRadius,
-    fontWeight
+    fontWeight,
+    borderWidth,
+    borderColor,
+    borderStyle
   } = attributes;
 
   const blockProps = useBlockProps({
-    className: 'ad-button-block',
+    className: 'adaire-button-block',
     style: {
       '--button-color': buttonColor || '#000000',
       '--button-bg-color': buttonBackgroundColor || 'transparent',
@@ -47,6 +50,9 @@ export default function Edit({ attributes, setAttributes }) {
       '--button-z-index': zIndex || '1',
       '--button-border-radius': borderRadius ? `${borderRadius}px` : '0px',
       '--button-font-weight': fontWeight || '500',
+      '--button-border-width': borderWidth ? `${borderWidth}px` : '2px',
+      '--button-border-color': borderColor || '#ff4242',
+      '--button-border-style': borderStyle || 'solid',
     }
   });
 
@@ -167,6 +173,43 @@ export default function Edit({ attributes, setAttributes }) {
             onChange={(value) => setAttributes({ buttonStyle: value })}
           />
 
+          {buttonStyle === 'border' && (
+            <>
+              <RangeControl
+                label="Border Width (px)"
+                value={borderWidth}
+                onChange={(value) => setAttributes({ borderWidth: value })}
+                min={1}
+                max={10}
+                step={1}
+              />
+
+              <BaseControl label="Border Color">
+                <ColorPicker
+                  color={borderColor}
+                  onChangeComplete={(color) => setAttributes({ borderColor: color.hex })}
+                  disableAlpha
+                />
+              </BaseControl>
+
+              <SelectControl
+                label="Border Style"
+                value={borderStyle}
+                options={[
+                  { label: 'Solid', value: 'solid' },
+                  { label: 'Dashed', value: 'dashed' },
+                  { label: 'Dotted', value: 'dotted' },
+                  { label: 'Double', value: 'double' },
+                  { label: 'Groove', value: 'groove' },
+                  { label: 'Ridge', value: 'ridge' },
+                  { label: 'Inset', value: 'inset' },
+                  { label: 'Outset', value: 'outset' }
+                ]}
+                onChange={(value) => setAttributes({ borderStyle: value })}
+              />
+            </>
+          )}
+
           <RangeControl
             label="Blur Amount (px)"
             value={blurAmount}
@@ -280,7 +323,7 @@ export default function Edit({ attributes, setAttributes }) {
           href={buttonLink}
           target={openInNewTab ? '_blank' : undefined}
           rel={openInNewTab ? 'noopener noreferrer' : undefined}
-          className={`ad-button-block__link ad-button-block__link--${buttonStyle || 'underline'} ad-button-block__link--${hoverAnimation || 'slide-underline'}`}
+          className={`adaire-button-block__link adaire-button-block__link--${buttonStyle || 'underline'} adaire-button-block__link--${hoverAnimation || 'slide-underline'}`}
         >
           {buttonText}
           {showIcon !== false && (

@@ -5,13 +5,14 @@
   "version": "0.1.0",
   "title": "Testimonial Block",
   "category": "text",
-  "icon": "text",
   "description": "A testimonial block in a customizable carousel",
   "example": {},
   "supports": {
-    "html": false
+    "html": false,
+    "anchor": true
   },
   "textdomain": "testimonial-block",
+  "icon": "<svg\r\n\t\t\twidth=\"24\"\r\n\t\t\theight=\"24\"\r\n\t\t\tviewBox=\"0 0 24 24\"\r\n\t\t\tfill=\"none\"\r\n\t\t\txmlns=\"http://www.w3.org/2000/svg\"\r\n\t\t>\r\n\t\t\t<g clipPath=\"url(#clip0_7_34)\">\r\n\t\t\t\t<rect width=\"24\" height=\"24\" rx=\"5\" fill=\"#F0F0F1\" />\r\n\t\t\t\t<path\r\n\t\t\t\t\td=\"M11.5 15H7C5.93913 15 4.92172 15.4214 4.17157 16.1716C3.42143 16.9217 3 17.9391 3 19V21\"\r\n\t\t\t\t\tfill=\"#F0F0F1\"\r\n\t\t\t\t/>\r\n\t\t\t\t<path\r\n\t\t\t\t\td=\"M11.5 15H7C5.93913 15 4.92172 15.4214 4.17157 16.1716C3.42143 16.9217 3 17.9391 3 19V21\"\r\n\t\t\t\t\tstroke=\"black\"\r\n\t\t\t\t\tstrokeWidth=\"1.5\"\r\n\t\t\t\t\tstrokeLinecap=\"round\"\r\n\t\t\t\t\tstrokeLinejoin=\"round\"\r\n\t\t\t\t/>\r\n\t\t\t\t<path\r\n\t\t\t\t\td=\"M10 11C12.2091 11 14 9.20914 14 7C14 4.79086 12.2091 3 10 3C7.79086 3 6 4.79086 6 7C6 9.20914 7.79086 11 10 11Z\"\r\n\t\t\t\t\tfill=\"black\"\r\n\t\t\t\t\tstroke=\"black\"\r\n\t\t\t\t\tstrokeWidth=\"1.5\"\r\n\t\t\t\t\tstrokeLinecap=\"round\"\r\n\t\t\t\t\tstrokeLinejoin=\"round\"\r\n\t\t\t\t/>\r\n\t\t\t\t<path\r\n\t\t\t\t\td=\"M20 13H14\"\r\n\t\t\t\t\tstroke=\"#FF0000\"\r\n\t\t\t\t\tstrokeWidth=\"1.5\"\r\n\t\t\t\t\tstrokeLinecap=\"round\"\r\n\t\t\t\t\tstrokeLinejoin=\"round\"\r\n\t\t\t\t/>\r\n\t\t\t\t<path\r\n\t\t\t\t\td=\"M20 16H14\"\r\n\t\t\t\t\tstroke=\"black\"\r\n\t\t\t\t\tstrokeWidth=\"1.5\"\r\n\t\t\t\t\tstrokeLinecap=\"round\"\r\n\t\t\t\t\tstrokeLinejoin=\"round\"\r\n\t\t\t\t/>\r\n\t\t\t\t<path\r\n\t\t\t\t\td=\"M20 19H14\"\r\n\t\t\t\t\tstroke=\"#FF0000\"\r\n\t\t\t\t\tstrokeWidth=\"1.5\"\r\n\t\t\t\t\tstrokeLinecap=\"round\"\r\n\t\t\t\t\tstrokeLinejoin=\"round\"\r\n\t\t\t\t/>\r\n\t\t\t</g>\r\n\t\t\t<defs>\r\n\t\t\t\t<clipPath id=\"clip0_7_34\">\r\n\t\t\t\t\t<rect width=\"24\" height=\"24\" rx=\"5\" fill=\"white\" />\r\n\t\t\t\t</clipPath>\r\n\t\t\t</defs>\r\n\t\t</svg>",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
@@ -123,6 +124,52 @@
         "mobile": {
           "value": 100,
           "unit": "%"
+        }
+      }
+    },
+    "cardWidth": {
+      "type": "object",
+      "default": {
+        "desktop": {
+          "value": 100,
+          "unit": "%"
+        },
+        "tablet": {
+          "value": 100,
+          "unit": "%"
+        },
+        "mobile": {
+          "value": 100,
+          "unit": "%"
+        }
+      }
+    },
+    "slidesPerViewMobile": {
+      "type": "number",
+      "default": 1
+    },
+    "slidesPerViewTablet": {
+      "type": "number",
+      "default": 2
+    },
+    "slidesPerViewDesktop": {
+      "type": "number",
+      "default": 3
+    },
+    "cardGap": {
+      "type": "object",
+      "default": {
+        "desktop": {
+          "value": 30,
+          "unit": "px"
+        },
+        "tablet": {
+          "value": 20,
+          "unit": "px"
+        },
+        "mobile": {
+          "value": 15,
+          "unit": "px"
         }
       }
     }

@@ -1,24 +1,18 @@
 .adaire-accordion {
   /* Constrained container support - apply to inner container */
-  &[style*="--acc-container-mode: constrained"] {
-    .adaire-accordion__container {
-      max-width: var(--acc-container-max-width, 1200px);
-      margin-left: auto;
-      margin-right: auto;
-    }
+  .adaire-accordion__container.is-constrained {
+    max-width: var(--acc-container-max-width, 1200px);
+    margin-left: auto;
+    margin-right: auto;
     
     /* Responsive container max-width for tablet */
     @media (max-width: 1024px) {
-      .adaire-accordion__container {
-        max-width: var(--acc-container-max-width-tablet, var(--acc-container-max-width, 100%));
-      }
+      max-width: var(--acc-container-max-width-tablet, var(--acc-container-max-width, 100%));
     }
     
     /* Responsive container max-width for mobile */
     @media (max-width: 768px) {
-      .adaire-accordion__container {
-        max-width: var(--acc-container-max-width-mobile, var(--acc-container-max-width-tablet, 100%));
-      }
+      max-width: var(--acc-container-max-width-mobile, var(--acc-container-max-width-tablet, 100%));
     }
   }
   --acc-title-color: #111;

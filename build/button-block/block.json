@@ -5,13 +5,14 @@
   "version": "0.1.0",
   "title": "Button Block",
   "category": "widgets",
-  "icon": "button",
   "description": "A simple button block with customizable text, link, and target options.",
   "example": {},
   "supports": {
-    "html": false
+    "html": false,
+    "anchor": true
   },
   "textdomain": "button-block",
+  "icon": "<svg\r\n\t\t\twidth=\"24\"\r\n\t\t\theight=\"24\"\r\n\t\t\tviewBox=\"0 0 24 24\"\r\n\t\t\tfill=\"none\"\r\n\t\t\txmlns=\"http://www.w3.org/2000/svg\"\r\n\t\t>\r\n\t\t\t<path\r\n\t\t\t\td=\"M0 5C0 2.23858 2.23858 0 5 0H19C21.7614 0 24 2.23858 24 5V19C24 21.7614 21.7614 24 19 24H5C2.23858 24 0 21.7614 0 19V5Z\"\r\n\t\t\t\tfill=\"#F0F0F1\"\r\n\t\t\t/>\r\n\t\t\t<rect\r\n\t\t\t\tx=\"1.5\"\r\n\t\t\t\ty=\"7.5\"\r\n\t\t\t\twidth=\"21\"\r\n\t\t\t\theight=\"8\"\r\n\t\t\t\trx=\"1.5\"\r\n\t\t\t\tfill=\"#F0F0F1\"\r\n\t\t\t\tstroke=\"black\"\r\n\t\t\t/>\r\n\t\t\t<path\r\n\t\t\t\topacity=\"0.92\"\r\n\t\t\t\td=\"M20.7656 10H18.2344C18.1049 10 18 10.4797 18 11.0714V11.9286C18 12.5203 18.1049 13 18.2344 13H20.7656C20.8951 13 21 12.5203 21 11.9286V11.0714C21 10.4797 20.8951 10 20.7656 10Z\"\r\n\t\t\t\tfill=\"#FF0000\"\r\n\t\t\t\tstroke=\"#FF0000\"\r\n\t\t\t/>\r\n\t\t\t<path\r\n\t\t\t\topacity=\"0.92\"\r\n\t\t\t\td=\"M14.9844 10H4.01562C3.45471 10 3 10.4797 3 11.0714V11.9286C3 12.5203 3.45471 13 4.01562 13H14.9844C15.5453 13 16 12.5203 16 11.9286V11.0714C16 10.4797 15.5453 10 14.9844 10Z\"\r\n\t\t\t\tfill=\"black\"\r\n\t\t\t\tstroke=\"black\"\r\n\t\t\t/>\r\n\t\t</svg>",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
@@ -101,6 +102,18 @@
     "fontWeight": {
       "type": "string",
       "default": "500"
+    },
+    "borderWidth": {
+      "type": "number",
+      "default": 2
+    },
+    "borderColor": {
+      "type": "string",
+      "default": "#ff4242"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "solid"
     }
   }
 }

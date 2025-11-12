@@ -14,12 +14,19 @@ import {
 import { desktop, tablet, mobile } from "@wordpress/icons";
 import { useState } from "@wordpress/element";
 import UpgradeNotice from '../components/UpgradeNotice';
+import { useBlockLimits } from '../components/useBlockLimits';
 
-// Get limit from PHP (server-side validation)
-const FREE_TIER_ITEM_LIMIT = window.adaireBlockLimits?.['logos-block']?.limit || 3;
+const FREE_TIER_ITEM_LIMIT = 3;
 
 export default function Edit({ attributes, setAttributes }) {
 	const [deviceType, setDeviceType] = useState("desktop");
+	
+	// Check block limits
+	const { isLimitReached, showUpgradeNotice, upgradeMessage } = useBlockLimits(
+		'logos-block', 
+		attributes.partnerLogos || [], 
+		'logo'
+	);
 	
 	const {
 		partnerLogos = [],
@@ -66,7 +73,7 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 
 	const addLogo = () => {
-		if (partnerLogos.length >= FREE_TIER_ITEM_LIMIT) {
+		if (isLimitReached) {
 			return; // Don't add if limit reached
 		}
 		const newLogo = {
@@ -435,12 +442,16 @@ export default function Edit({ attributes, setAttributes }) {
 					<Button 
 						onClick={addLogo} 
 						isPrimary
-						disabled={ partnerLogos.length >= FREE_TIER_ITEM_LIMIT }
+						disabled={ isLimitReached }
 					>
 						Add Logo
 					</Button>
-					{ partnerLogos.length >= FREE_TIER_ITEM_LIMIT && (
-						<UpgradeNotice itemType="logo" />
+					{ showUpgradeNotice && (
+						<UpgradeNotice 
+							variant="inline"
+							itemType="logo"
+							message={upgradeMessage}
+						/>
 					) }
 				</PanelBody>
 

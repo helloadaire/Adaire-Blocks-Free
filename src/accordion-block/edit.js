@@ -4,14 +4,20 @@ import { useBlockProps, RichText, InspectorControls } from '@wordpress/block-edi
 import { PanelBody, RangeControl, ToggleControl, ColorPalette, Button, ButtonGroup, TextControl } from '@wordpress/components';
 import { desktop, tablet, mobile } from '@wordpress/icons';
 import UpgradeNotice from '../components/UpgradeNotice';
+import { useBlockLimits } from '../components/useBlockLimits';
 
 const EASINGS = [ 'ease', 'linear', 'ease-in', 'ease-out', 'ease-in-out' ];
-
-// Get limit from PHP (server-side validation)
-const FREE_TIER_ITEM_LIMIT = window.adaireBlockLimits?.['accordion-block']?.limit || 3;
+const FREE_TIER_ITEM_LIMIT = 3;
 
 export default function Edit( { attributes, setAttributes, clientId } ) {
     const [deviceType, setDeviceType] = useState('desktop');
+    
+    // Check block limits
+    const { isLimitReached, showUpgradeNotice, upgradeMessage } = useBlockLimits(
+        'accordion-block', 
+        attributes.items || [], 
+        'accordion'
+    );
     
     const {
         blockId,
@@ -97,7 +103,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
     }, [ items, setAttributes ] );
 
     const addItem = () => {
-        if (items.length >= FREE_TIER_ITEM_LIMIT) {
+        if (isLimitReached) {
             return; // Don't add if limit reached
         }
         setAttributes( { items: [ ...items, { title: __('New Item', 'accordion-block'), content: __('Add content...', 'accordion-block'), open: false } ] } );
@@ -213,12 +219,16 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
                     <Button 
                         isPrimary 
                         onClick={ addItem }
-                        disabled={ items.length >= FREE_TIER_ITEM_LIMIT }
+                        disabled={ isLimitReached }
                     >
                         { __('Add Item', 'accordion-block') }
                     </Button>
-                    { items.length >= FREE_TIER_ITEM_LIMIT && (
-                        <UpgradeNotice itemType="item" />
+                    { showUpgradeNotice && (
+                        <UpgradeNotice 
+                            variant="inline"
+                            itemType="accordion"
+                            message={upgradeMessage}
+                        />
                     ) }
                     <RangeControl
                         label={ __('Gap', 'accordion-block') }
@@ -378,7 +388,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
             </InspectorControls>
 
             <div { ...blockProps } data-allow-multiple={ allowMultipleOpen }>
-                <div className="adaire-accordion__container">
+                <div className={`adaire-accordion__container ${containerMode === 'constrained' ? 'is-constrained' : ''}`}>
                     <div className="adaire-accordion__list">
                     { items.map( ( item, index ) => (
                         <div key={ index } className={ `adaire-accordion__item${ item.open ? ' is-open' : '' }` }>

@@ -8,9 +8,10 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
 import Edit from './edit';
 import Save from './save';
 import metadata from './block.json';
-
+import AccordionIcon from '../icons/accordion';
 registerBlockType(metadata.name, {
 	edit: Edit,
 	save: Save,
+	icon: AccordionIcon
 });
 
