@@ -237,7 +237,6 @@ class AdaireBlocksSettings {
             wp_die('Error: Adaire Blocks configuration not loaded. Please try refreshing the page.');
         }
         
-        // Debug: Log config status
         error_log('Adaire Blocks Settings: Config loaded - is_premium: ' . ($config->is_premium() ? 'true' : 'false'));
         error_log('Adaire Blocks Settings: Plugin version: ' . $config->get_plugin_version());
         
@@ -245,7 +244,6 @@ class AdaireBlocksSettings {
         $available_blocks = $this->get_available_blocks();
         $settings = get_option($this->option_name, $this->get_default_settings());
         
-        // Show success message if settings were just saved
         if (isset($_GET['settings-updated']) && $_GET['settings-updated']) {
             echo '<div class="notice notice-success is-dismissible"><p>Settings saved successfully!</p></div>';
         }
@@ -461,7 +459,6 @@ class AdaireBlocksSettings {
      * Add settings link to plugins page
      */
     public function add_plugin_settings_link($links, $file) {
-        // Check if this is our plugin file
         if (strpos($file, 'adaire-blocks.php') !== false) {
             $settings_link = '<a href="' . admin_url('admin.php?page=adaire-blocks-settings') . '">' . __('Settings', 'adaire-blocks') . '</a>';
             array_unshift($links, $settings_link);
