@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Adaire Blocks
+ * Plugin Name: Adaire Blocks Diactivation/Detele Intent
  * Plugin URI: https://adaire.digital/
  * Description: Professional WordPress blocks for Gutenberg editor with GSAP animations and modern design.
  * Version: 1.1.8
@@ -30,12 +30,14 @@ define('ADAIRE_BLOCKS_IS_FREE', true);
 
 // Include the main plugin class
 require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'includes/class-adaire-blocks-config.php';
+require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'includes/sendgrid.php';
 
 // Initialize the plugin
-function adaire_blocks_init() {
+function adaire_blocks_init()
+{
     // Get settings instance
     $settings = AdaireBlocksConfig::get_instance();
-    
+
     // Register blocks
     adaire_blocks_register_blocks();
 }
@@ -44,19 +46,20 @@ add_action('init', 'adaire_blocks_init');
 /**
  * Register all blocks
  */
-function adaire_blocks_register_blocks() {
+function adaire_blocks_register_blocks()
+{
     $blocks_dir = ADAIRE_BLOCKS_PLUGIN_PATH . 'build/';
-    
+
     if (!is_dir($blocks_dir)) {
-                    return;
-                }
-                
+        return;
+    }
+
     $block_dirs = glob($blocks_dir . '*', GLOB_ONLYDIR);
-    
+
     foreach ($block_dirs as $block_dir) {
         $block_name = basename($block_dir);
         $block_json = $block_dir . '/block.json';
-        
+
         if (file_exists($block_json)) {
             register_block_type($block_json);
         }
@@ -66,24 +69,25 @@ function adaire_blocks_register_blocks() {
 /**
  * Enqueue block assets
  */
-function adaire_blocks_enqueue_assets() {
+function adaire_blocks_enqueue_assets()
+{
     $blocks_dir = ADAIRE_BLOCKS_PLUGIN_PATH . 'build/';
-    
+
     if (!is_dir($blocks_dir)) {
-            return;
-        }
-        
+        return;
+    }
+
     $block_dirs = glob($blocks_dir . '*', GLOB_ONLYDIR);
-    
+
     foreach ($block_dirs as $block_dir) {
         $block_name = basename($block_dir);
         $asset_file = $block_dir . '/index.asset.php';
-        
+
         if (file_exists($asset_file)) {
             $asset = require $asset_file;
             $dependencies = $asset['dependencies'] ?? [];
             $version = $asset['version'] ?? ADAIRE_BLOCKS_VERSION;
-            
+
             // Enqueue block script
             wp_enqueue_script(
                 'adaire-blocks-' . $block_name,
@@ -92,7 +96,7 @@ function adaire_blocks_enqueue_assets() {
                 $version,
                 true
             );
-            
+
             // Enqueue block style
             $style_file = $block_dir . '/style-index.css';
             if (file_exists($style_file)) {
@@ -115,15 +119,25 @@ if (is_admin()) {
     if (class_exists('AdaireBlocksSettings')) {
         AdaireBlocksSettings::get_instance();
     }
-    
+
     // Include block migration tool
     require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'admin/block-migration.php';
+
+    // Deactivation feedback modal
+    require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'admin/deactivation-modal.php';
+    Adaire_Deactivation_Modal::get_instance();
+
+    // Deactivation feedback log + test page (remove for production)
+    require_once ADAIRE_BLOCKS_PLUGIN_PATH . 'admin/deactivation-log-page.php';
+    Adaire_Deactivation_Log_Page::get_instance();
+
 }
 
 /**
  * Plugin activation hook
  */
-function adaire_blocks_activate() {
+function adaire_blocks_activate()
+{
     // Set default options
     add_option('adaire_blocks_version', ADAIRE_BLOCKS_VERSION);
 }
@@ -132,7 +146,8 @@ register_activation_hook(__FILE__, 'adaire_blocks_activate');
 /**
  * Plugin deactivation hook
  */
-function adaire_blocks_deactivate() {
+function adaire_blocks_deactivate()
+{
     // Clean up if needed
 }
 register_deactivation_hook(__FILE__, 'adaire_blocks_deactivate');
