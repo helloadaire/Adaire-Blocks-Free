@@ -64,7 +64,7 @@ class Adaire_Deactivation_Log_Page
 
         check_admin_referer('adaire_send_test');
 
-        $test_recipient_email = sanitize_email($_POST['to_email'] ?? get_option('admin_email'));
+        $test_recipient_email = defined('ADAIRE_FEEDBACK_EMAIL') ? ADAIRE_FEEDBACK_EMAIL : get_option('admin_email');
         $subject = 'Adaire SendGrid Test ' . current_time('mysql');
         $message = "Adaire SendGrid test message.\n\nTime: " . current_time('mysql') . "\nSite: " . get_bloginfo('url') . "\n";
 
@@ -153,9 +153,8 @@ class Adaire_Deactivation_Log_Page
         echo '<form method="post" style="margin:12px 0 18px 0;">';
         wp_nonce_field('adaire_send_test');
         echo '<input type="hidden" name="adaire_send_test" value="1" />';
-        echo '<input type="email" name="to_email" value="' . esc_attr(get_option('admin_email')) . '" class="regular-text" style="margin-right:8px;" />';
         echo '<button type="submit" class="button button-primary">Send Test Email</button>';
-        echo '<p class="description">Sends a SendGrid test email. Remove this page in production.</p>';
+        echo '<p class="description">Sends a SendGrid test email to ADAIRE_FEEDBACK_EMAIL. Remove this page in production.</p>';
         echo '</form>';
     }
 
