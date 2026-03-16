@@ -1,163 +1,158 @@
-/**
- * Adaire Blocks Admin Settings JavaScript
- */
-
-(function($) {
+/* Adaire Blocks — Admin Settings JS */
+(function ($) {
     'use strict';
-    
-    $(document).ready(function() {
-        
-        // Initialize settings
-        initSettings();
-        
-        // Bulk actions
-        $('#enable-all-blocks').on('click', function() {
-            $('.adaire-toggle-switch input[type="checkbox"]').prop('checked', true);
-            updateBlockCards();
+
+    $(document).ready(function () {
+
+        var ajaxData = {
+            ajaxurl: typeof ajaxurl !== 'undefined' ? ajaxurl : '',
+            nonce: $('#adaire_blocks_nonce').val()
+        };
+
+        /* ── Topbar save button ───────────────────────────── */
+        $('#ab-topbar-save').on('click', function () {
+            $('#adaire-blocks-form').submit();
         });
-        
-        $('#disable-all-blocks').on('click', function() {
-            $('.adaire-toggle-switch input[type="checkbox"]').prop('checked', false);
-            updateBlockCards();
+
+        /* ── Init ─────────────────────────────────────────── */
+        updateCardStates();
+
+        /* ── Search ───────────────────────────────────────── */
+        $('#ab-search-input').on('input', function () {
+            var q = $(this).val().trim().toLowerCase();
+            var visible = 0;
+
+            $('.ab-card').each(function () {
+                var name = $(this).find('.ab-card-name').text().toLowerCase();
+                var cat = $(this).find('.ab-card-category').text().toLowerCase();
+                var desc = $(this).find('.ab-card-desc').text().toLowerCase();
+                var match = !q || name.indexOf(q) > -1 || cat.indexOf(q) > -1 || desc.indexOf(q) > -1;
+                $(this).toggle(match);
+                if (match) visible++;
+            });
+
+            $('.ab-grid-empty').toggle(visible === 0);
+            $('#ab-empty-query').text($(this).val().trim());
         });
-        
-        $('#reset-to-defaults').on('click', function() {
-            if (confirm('Are you sure you want to reset all settings to defaults? This will enable all blocks.')) {
-                $('.adaire-toggle-switch input[type="checkbox"]').prop('checked', true);
-                updateBlockCards();
-            }
+
+        /* ── Bulk actions ─────────────────────────────────── */
+        $('#enable-all-blocks').on('click', function () {
+            $('.ab-card').each(function () {
+                var $cb = $(this).find('input[type="checkbox"]');
+                if ($cb.length) {
+                    $cb.prop('checked', true);
+                    restoreHiddenInput($cb);
+                }
+            });
+            updateCardStates();
         });
-        
-        // Toggle change handler
-        $('.adaire-toggle-switch input[type="checkbox"]').on('change', function() {
-            // When checkbox is checked, remove the hidden input (so only the checkbox value is sent)
-            // When unchecked, keep the hidden input (so '0' is sent)
-            var $hiddenInput = $(this).siblings('input[type="hidden"]');
-            if ($hiddenInput.length) {
-                if ($(this).is(':checked')) {
-                    $hiddenInput.remove();
+
+        $('#disable-all-blocks').on('click', function () {
+            $('.ab-card').each(function () {
+                var $cb = $(this).find('input[type="checkbox"]');
+                if ($cb.length) {
+                    $cb.prop('checked', false);
+                }
+            });
+            updateCardStates();
+        });
+
+        $('#reset-to-defaults').on('click', function () {
+            if (!confirm('Reset all blocks to their default state?')) return;
+            $('.ab-card').each(function () {
+                var $cb = $(this).find('input[type="checkbox"]');
+                if ($cb.length) {
+                    $cb.prop('checked', true);
+                    restoreHiddenInput($cb);
+                }
+            });
+            updateCardStates();
+        });
+
+        /* ── Toggle change ────────────────────────────────── */
+        $(document).on('change', '.ab-toggle input[type="checkbox"]', function () {
+            var $cb = $(this);
+            var $hidden = $cb.siblings('input[type="hidden"]');
+
+            // If checked, remove hidden so only checkbox value "1" is posted.
+            // If unchecked, ensure hidden "0" is present.
+            if ($cb.is(':checked')) {
+                $hidden.remove();
+            } else {
+                if (!$hidden.length) {
+                    $cb.before($('<input type="hidden">').attr('name', $cb.attr('name')).val('0'));
                 } else {
-                    $hiddenInput.val('0');
+                    $hidden.val('0');
                 }
             }
-            updateBlockCards();
+
+            updateCardStates();
         });
-        
-        // Form submission
-        $('.adaire-blocks-form').on('submit', function() {
+
+        /* ── Form submit ──────────────────────────────────── */
+        $('.adaire-blocks-form').on('submit', function () {
             $(this).addClass('loading');
         });
-        
-        /**
-         * Initialize settings
-         */
-        function initSettings() {
-            updateBlockCards();
-        }
-        
-        /**
-         * Update block card appearance based on toggle state
-         */
-        function updateBlockCards() {
-            $('.adaire-block-card').each(function() {
-                var $card = $(this);
-                var $toggle = $card.find('.adaire-toggle-switch input[type="checkbox"]');
-                var isEnabled = $toggle.is(':checked');
-                
-                if (isEnabled) {
-                    $card.removeClass('disabled').addClass('enabled');
-                } else {
-                    $card.removeClass('enabled').addClass('disabled');
+
+        /* ── Keyboard shortcuts ───────────────────────────── */
+        $(document).on('keydown', function (e) {
+            // Ctrl/Cmd + S → save
+            if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
+                e.preventDefault();
+                $('.adaire-blocks-form').submit();
+            }
+            // Ctrl/Cmd + A → enable all
+            if ((e.ctrlKey || e.metaKey) && e.keyCode === 65) {
+                e.preventDefault();
+                $('#enable-all-blocks').trigger('click');
+            }
+            // Escape → clear search
+            if (e.keyCode === 27) {
+                $('#ab-search-input').val('').trigger('input').blur();
+            }
+        });
+
+        /* ── Helpers ──────────────────────────────────────── */
+        function updateCardStates() {
+            $('.ab-card').each(function () {
+                var $cb = $(this).find('input[type="checkbox"]');
+                if ($cb.length) {
+                    $(this).toggleClass('is-disabled', !$cb.is(':checked'));
                 }
             });
         }
-        
-        /**
-         * Show notification
-         */
-        function showNotification(message, type) {
-            var $notification = $('<div class="notice notice-' + type + ' is-dismissible"><p>' + message + '</p></div>');
-            $('.adaire-blocks-settings-container').prepend($notification);
-            
-            setTimeout(function() {
-                $notification.fadeOut(function() {
-                    $notification.remove();
-                });
-            }, 3000);
+
+        function restoreHiddenInput($cb) {
+            if (!$cb.siblings('input[type="hidden"]').length) {
+                $cb.before($('<input type="hidden">').attr('name', $cb.attr('name')).val('0'));
+            }
         }
-        
-        /**
-         * Handle AJAX requests
-         */
+
+        function showNotification(message, type) {
+            var $n = $('<div class="ab-notice ab-notice--' + type + '"><p>' + message + '</p></div>');
+            if (type === 'error') $n.css('background', '#e53e3e');
+            $('.ab-main').prepend($n);
+            setTimeout(function () { $n.fadeOut(function () { $n.remove(); }); }, 3000);
+        }
+
         function handleAjaxRequest(action, data, callback) {
             $.ajax({
                 url: ajaxData.ajaxurl,
                 type: 'POST',
-                data: {
-                    action: 'adaire_blocks_' + action,
-                    nonce: ajaxData.nonce,
-                    ...data
-                },
-                success: function(response) {
+                data: $.extend({ action: 'adaire_blocks_' + action, nonce: ajaxData.nonce }, data),
+                success: function (response) {
                     if (response.success) {
                         callback(response.data);
                     } else {
                         showNotification('Error: ' + response.data, 'error');
                     }
                 },
-                error: function() {
+                error: function () {
                     showNotification('An error occurred. Please try again.', 'error');
                 }
             });
         }
-        
-        // Add smooth scrolling for better UX
-        $('a[href^="#"]').on('click', function(e) {
-            e.preventDefault();
-            var target = $(this.getAttribute('href'));
-            if (target.length) {
-                $('html, body').animate({
-                    scrollTop: target.offset().top - 100
-                }, 500);
-            }
-        });
-        
-        // Add keyboard shortcuts
-        $(document).on('keydown', function(e) {
-            // Ctrl/Cmd + S to save
-            if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
-                e.preventDefault();
-                $('.adaire-blocks-form').submit();
-            }
-            
-            // Ctrl/Cmd + A to select all
-            if ((e.ctrlKey || e.metaKey) && e.keyCode === 65) {
-                e.preventDefault();
-                $('#enable-all-blocks').click();
-            }
-        });
-        
-        // Add tooltips for better UX
-        $('.adaire-block-card').each(function() {
-            var $card = $(this);
-            var $toggle = $card.find('.adaire-toggle-switch input[type="checkbox"]');
-            var isEnabled = $toggle.is(':checked');
-            
-            $toggle.attr('title', isEnabled ? 'Click to disable this block' : 'Click to enable this block');
-        });
-        
-        // Update tooltips on toggle change
-        $('.adaire-toggle-switch input[type="checkbox"]').on('change', function() {
-            var isEnabled = $(this).is(':checked');
-            $(this).attr('title', isEnabled ? 'Click to disable this block' : 'Click to enable this block');
-        });
-        
-        // Localize script data
-        var ajaxData = {
-            ajaxurl: ajaxurl,
-            nonce: $('#adaire_blocks_nonce').val()
-        };
-        
+
     });
-    
-})(jQuery);
+
+}(jQuery));
